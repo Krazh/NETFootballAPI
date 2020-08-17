@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NETFootballAPI", "NETFootballAPI\NETFootballAPI.csproj", "{50473CFA-74CB-415D-8564-84BA9285E503}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_NETFootballAPI", "UnitTest_NETFootballAPI\UnitTest_NETFootballAPI.csproj", "{DA19167F-8C15-4A02-A0F6-D32598424A09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50473CFA-74CB-415D-8564-84BA9285E503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50473CFA-74CB-415D-8564-84BA9285E503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50473CFA-74CB-415D-8564-84BA9285E503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50473CFA-74CB-415D-8564-84BA9285E503}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA19167F-8C15-4A02-A0F6-D32598424A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA19167F-8C15-4A02-A0F6-D32598424A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA19167F-8C15-4A02-A0F6-D32598424A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA19167F-8C15-4A02-A0F6-D32598424A09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
