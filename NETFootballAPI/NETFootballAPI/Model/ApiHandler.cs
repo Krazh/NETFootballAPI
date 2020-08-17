@@ -7,8 +7,8 @@ namespace NETFootballAPI
 {
     public partial class ApiHandler
     {
-        private string _apiKey;
-        private string _apiUrl;
+        private string _apiKey = "";
+        private string _apiUrl = "";
         private readonly HttpClient _client;
 
         public ApiHandler()

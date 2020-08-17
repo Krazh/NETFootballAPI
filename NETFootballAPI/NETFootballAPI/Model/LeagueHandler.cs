@@ -38,7 +38,7 @@ namespace NETFootballAPI
 
         public async Task<League> GetLeagueById(int id)
         {
-            if (id < 0)
+            if (id <= 0)
                 throw new ArgumentException("Id must be greater than or equal to 0");
             
             var endpoint = "leagues";
@@ -58,8 +58,9 @@ namespace NETFootballAPI
             {
                 // TODO Implement error logging
                 Console.WriteLine(e);
-                return new League();
+                return null;
             }
+
         }
     }
 }
