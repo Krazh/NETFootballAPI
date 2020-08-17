@@ -7,7 +7,7 @@ namespace UnitTest_NETFootballAPI
 {
     public class LeagueHandlerUnitTest
     {
-        private ApiHandler _handler = new ApiHandler();
+        private readonly ApiHandler _handler = new ApiHandler();
         [SetUp]
         public void Setup()
         {
@@ -25,16 +25,11 @@ namespace UnitTest_NETFootballAPI
             Assert.That(items.Count > 0);
         }
 
-        [Test]
-        public async Task GetLeagueById_IdShouldBeHigherThan0_Test1()
+        [TestCase(-25, TestName = "Negative number")]
+        [TestCase(0, TestName = "Zero")]
+        public void GetLeagueById_IdShouldBeHigherThan0(int testId)
         {
-            Assert.That(async () => await _handler.GetLeagueById(-25), Throws.TypeOf<ArgumentException>());
-        }
-
-        [Test]
-        public async Task GetLeagueById_IdShouldBeHigherThan0_Test2()
-        {
-            Assert.That(async () => await _handler.GetLeagueById(0), Throws.TypeOf<ArgumentException>());
+            Assert.That(async () => await _handler.GetLeagueById(testId), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
