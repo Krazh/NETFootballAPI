@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -18,12 +19,19 @@ namespace NETFootballAPI
 
         public void SetApiKey(string key)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentNullException(nameof(key));
             _apiKey = key;
             _client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
         }
 
         public void SetApiUrl(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+                throw new ArgumentNullException(nameof(url));
+ 
+            var unusedVar = new Uri(url); // Only used to test if string is a valid url
+            
             _apiUrl = url;
         }
 
