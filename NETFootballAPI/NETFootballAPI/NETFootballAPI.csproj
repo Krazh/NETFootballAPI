@@ -16,4 +16,13 @@
       <None Remove="obj\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Data" />
+      <Folder Include="Model" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    </ItemGroup>
+
 </Project>
