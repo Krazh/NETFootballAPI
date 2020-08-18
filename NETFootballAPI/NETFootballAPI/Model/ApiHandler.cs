@@ -1,5 +1,7 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -49,6 +51,12 @@ namespace NETFootballAPI
         {
             if (array.First == null) throw new NullReferenceException();
             return JsonConvert.DeserializeObject<T>(array.First.ToString()!);
+        }
+
+        private List<T> GetListFromJArray<T>(JArray array)
+        {
+            if (array.First == null) throw new NullReferenceException();
+            return (from object ob in array select JsonConvert.DeserializeObject<T>(ob.ToString())).ToList();
         }
     }
 } 

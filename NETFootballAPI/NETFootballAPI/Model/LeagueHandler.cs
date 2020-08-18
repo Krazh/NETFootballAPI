@@ -20,13 +20,8 @@ namespace NETFootballAPI
                 var content = await _client.GetStringAsync(_apiUrl + endpoint);
 
                 var jObj = DeserializeJson(content, endpoint);
-            
-                var leagues = new List<League>();
-
-                if (jObj == null) return leagues;
-                leagues.AddRange(from object? ob in jObj select JsonConvert.DeserializeObject<League>(ob.ToString()!));
-
-                return leagues;
+                
+                return GetListFromJArray<League>(jObj);
             }
             catch (Exception e)
             {
@@ -60,24 +55,18 @@ namespace NETFootballAPI
             }
         }
 
-        private static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        public async Task<List<League>> GetLeaguesByTeamId(int teamId)
         {
-            if (id <= 0)
-                throw new ArgumentException("Id must be greater than or equal to 0");
-        }
-
-        public async Task<League> GetLeagueByTeamId(int id)
-        {
-            CheckIfIdIsLessThanOrEqualToZero(id);
+            CheckIfIdIsLessThanOrEqualToZero(teamId);
 
             var endpoint = "leagues";
 
             try
             {
-                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/team/{id}");
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/team/{teamId}");
                 var jObj = DeserializeJson(content, endpoint);
-
-                return GetFirstObjectFromJArray<League>(jObj);
+                
+                return GetListFromJArray<League>(jObj);
             }
             catch (Exception e)
             {
@@ -85,8 +74,33 @@ namespace NETFootballAPI
                 Console.WriteLine(e);
                 return null;
             }
+        }
 
-            return new League();
+        public async Task<List<League>> GetLeaguesByTeamIdAndSeason(int teamId, int season)
+        {
+            CheckIfIdIsLessThanOrEqualToZero(teamId);
+
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/team/{teamId}/{season}");
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+        
+        private static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Id must be greater than or equal to 0");
         }
     }
 }

@@ -41,24 +41,47 @@ namespace UnitTest_NETFootballAPI
 
         [TestCase(-25, TestName = "Negative number")]
         [TestCase(0, TestName = "Zero")]
-        public void GetLeagueByTeamId_IdShouldBeHigherThan0(int testId)
+        public void GetLeaguesByTeamId_IdShouldBeHigherThan0(int testId)
         {
-            Assert.That(async () => await _handler.GetLeagueByTeamId(testId), Throws.TypeOf<ArgumentException>());
+            Assert.That(async () => await _handler.GetLeaguesByTeamId(testId), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        public async Task GetLeagueByTeamId_InvalidIdShouldReturnNullObject()
+        public async Task GetLeaguesByTeamId_InvalidIdShouldReturnNullObject()
         {
-            var item = await _handler.GetLeagueByTeamId(int.MaxValue);
+            var item = await _handler.GetLeaguesByTeamId(int.MaxValue);
             Assert.That(item == null);
         }
 
         [Test]
-        public async Task GetLeagueByTeamId_ShouldReturnValidTeam()
+        public async Task GetLeaguesByTeamId_ShouldReturnValidListOfLeagues()
         {
-            // Assert. Test api has 4 leagues available, Id 357 is Brazil and Team Id 15 is a team from Brazil.
-            var item = await _handler.GetLeagueByTeamId(15);
-            Assert.That(item.Id == "357");
+            // Assert. Test api has 4 leagues available, LeagueId 357 is Brazil and TeamId 15 is a team from Brazil.
+            var item = await _handler.GetLeaguesByTeamId(15);
+            Assert.That(item.Count > 0);
+        }
+        
+        [TestCase(-25, 2018, TestName = "Negative number")]
+        [TestCase(0, 2018, TestName = "Zero")]
+        public void GetLeaguesByTeamIdAndSeason_IdShouldBeHigherThan0(int testId, int season)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTeamIdAndSeason(testId, season), Throws.TypeOf<ArgumentException>());
+        }
+        
+        [Test]
+        public async Task GetLeaguesByTeamIdAndSeason_InvalidIdShouldReturnNullObject()
+        {
+            var item = await _handler.GetLeaguesByTeamIdAndSeason(int.MaxValue, 2018);
+            Assert.That(item == null);
+        }
+        
+        [Test]
+        public async Task GetLeaguesByTeamIdAndSeason_ShouldReturnValidListOfLeagues()
+        {
+            // Assert. Test api has 4 leagues available, LeagueId 357 is Brazil and TeamId 15 is a team from Brazil. 
+            // Due to limitations of the demo url only the season 2019 has data for the league. 
+            var item = await _handler.GetLeaguesByTeamIdAndSeason(15,2019);
+            Assert.That(item.Count > 0);
         }
     }
 }
