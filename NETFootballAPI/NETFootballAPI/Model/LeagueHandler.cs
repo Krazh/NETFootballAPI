@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,7 +27,6 @@ namespace NETFootballAPI
             catch (Exception e)
             {
                 // TODO Implement error logging
-                Console.WriteLine(e);
                 return new List<League>();
             }
         }
@@ -71,7 +71,6 @@ namespace NETFootballAPI
             catch (Exception e)
             {
                 // TODO Implement error logging
-                Console.WriteLine(e);
                 return null;
             }
         }
@@ -92,14 +91,14 @@ namespace NETFootballAPI
             catch (Exception e)
             {
                 // TODO Implement error logging
-                Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<League> GetLeagueByStringSearch(string search)
+        public async Task<League> GetLeagueByStringSearchAsync(string search)
         {
             if (string.IsNullOrWhiteSpace(search)) throw new ArgumentException();
+            CheckIfStringContainsSymbols(search);
             search = search.Replace(' ', '_');
             var endpoint = "leagues";
 
@@ -113,17 +112,42 @@ namespace NETFootballAPI
             catch (Exception e)
             {
                 // TODO Implement error logging
-                Console.WriteLine(e);
                 return null;
             }
-            
-            return null;
         }
-        
+
+        public async Task<List<League>> GetLeaguesByCountryAsync(string country)
+        {
+            if (string.IsNullOrWhiteSpace(country)) throw new ArgumentException();
+            CheckIfStringContainsSymbols(country);
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/country/{country}");
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        #region Private Methods
+
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("Id must be greater than or equal to 0");
         }
+
+        private static void CheckIfStringContainsSymbols(string item)
+        {
+            if (Regex.IsMatch(item, "[!,@,#,$,%,^,&,*,?,~,£,(,)]")) throw new ArgumentException("String contains invalid symbols");
+        }
+        #endregion
     }
 }

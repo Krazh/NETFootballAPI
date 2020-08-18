@@ -95,13 +95,12 @@ namespace UnitTest_NETFootballAPI
             Assert.That(item.Count > 0);
         }
         #endregion
-
         #region GetLeagueByStringSearch
 
         [Test]
         public void GetLeagueByStringSearch_StringParameterMustNotBeNullOrWhiteSpace()
         {
-            Assert.That(async () => await _handler.GetLeagueByStringSearch(""), Throws.TypeOf<ArgumentException>());
+            Assert.That(async () => await _handler.GetLeagueByStringSearchAsync(""), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -109,8 +108,38 @@ namespace UnitTest_NETFootballAPI
         {
             // Test API has the league Serie A available from Brazil
             var validLeagueName = "Serie A";
-            var item = await _handler.GetLeagueByStringSearch(validLeagueName);
+            var item = await _handler.GetLeagueByStringSearchAsync(validLeagueName);
             Assert.That(item.Name == validLeagueName);
+        }
+
+        [Test]
+        public void GetLeagueByStringSearch_StringShouldNotContainSymbols()
+        {
+            Assert.That(async () => await _handler.GetLeagueByStringSearchAsync("Braz!l"), Throws.TypeOf<ArgumentException>());
+        }
+
+        #endregion
+        #region GetLeaguesByCountry
+
+        [Test]
+        public void GetLeaguesByCountry_StringShouldNotBeNullOrWhitespace()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByCountryAsync(""), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GetLeaguesByCountry_StringShouldNotContainSymbols()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByCountryAsync("Braz!l"),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesByCountry_ShouldReturnListOfLeagues()
+        {
+            var country = "Brazil";
+            var item = await _handler.GetLeaguesByCountryAsync(country);
+            Assert.That(item.Count > 0 && item[0].Country == country);
         }
 
         #endregion
