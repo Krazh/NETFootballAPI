@@ -11,7 +11,7 @@ namespace NETFootballAPI
 {
     public partial class ApiHandler
     {
-        public async Task<List<League>> GetAllLeagues()
+        public async Task<List<League>> GetAllLeaguesAsync()
         {
             var endpoint = "leagues";
 
@@ -31,7 +31,7 @@ namespace NETFootballAPI
             }
         }
 
-        public async Task<League> GetLeagueById(int id)
+        public async Task<League> GetLeagueByIdAsync(int id)
         {
             CheckIfIdIsLessThanOrEqualToZero(id);
             
@@ -55,7 +55,7 @@ namespace NETFootballAPI
             }
         }
 
-        public async Task<List<League>> GetLeaguesByTeamId(int teamId)
+        public async Task<List<League>> GetLeaguesByTeamIdAsync(int teamId)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
 
@@ -76,7 +76,7 @@ namespace NETFootballAPI
             }
         }
 
-        public async Task<List<League>> GetLeaguesByTeamIdAndSeason(int teamId, int season)
+        public async Task<List<League>> GetLeaguesByTeamIdAndSeasonAsync(int teamId, int season)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
 
