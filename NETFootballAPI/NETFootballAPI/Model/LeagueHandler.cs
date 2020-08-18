@@ -199,6 +199,25 @@ namespace NETFootballAPI
             }
         }
 
+        public async Task<List<League>> GetLeaguesBySeasonAsync(int year)
+        {
+            CheckIfYearIsInValidRange(year);
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/season/{year}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
         #region Private Methods
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {

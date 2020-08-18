@@ -248,5 +248,22 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
+        #region GetLeaguesBySeason
+
+        [TestCase(1900, TestName = "The year is 1900")]
+        [TestCase(10000, TestName = "The year is 10000")]
+        public void GetLeaguesBySeason_SeasonShouldBeValidYear(int year)
+        {
+            Assert.That(async () => await _handler.GetLeaguesBySeasonAsync(year), Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesBySeason_ShouldReturnList()
+        {
+            var items = await _handler.GetLeaguesBySeasonAsync(2019);
+            Assert.That(items.Count > 0 && items[0].Season == 2019);
+        }
+
+        #endregion
     }
 }
