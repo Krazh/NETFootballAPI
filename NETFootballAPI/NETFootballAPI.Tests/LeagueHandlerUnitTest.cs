@@ -17,6 +17,8 @@ namespace UnitTest_NETFootballAPI
             _handler.SetApiUrl(url);
         }
 
+        #region GetAllLeagues
+
         [Test]
         public async Task GetAllLeagues_ReturnsSomething()
         {
@@ -24,6 +26,9 @@ namespace UnitTest_NETFootballAPI
             
             Assert.That(items.Count > 0);
         }
+
+        #endregion
+        #region GetLeaguesById
 
         [TestCase(-25, TestName = "Negative number")]
         [TestCase(0, TestName = "Zero")]
@@ -38,6 +43,10 @@ namespace UnitTest_NETFootballAPI
             var item = await _handler.GetLeagueByIdAsync(int.MaxValue);
             Assert.That(item == null);
         }
+
+
+        #endregion
+        #region GetLeaguesByTeamId
 
         [TestCase(-25, TestName = "Negative number")]
         [TestCase(0, TestName = "Zero")]
@@ -60,7 +69,9 @@ namespace UnitTest_NETFootballAPI
             var item = await _handler.GetLeaguesByTeamIdAsync(15);
             Assert.That(item.Count > 0);
         }
-        
+
+        #endregion
+        #region GetLeaguesByTeamIdAndSeason
         [TestCase(-25, 2018, TestName = "Negative number")]
         [TestCase(0, 2018, TestName = "Zero")]
         public void GetLeaguesByTeamIdAndSeason_IdShouldBeHigherThan0(int testId, int season)
@@ -83,5 +94,25 @@ namespace UnitTest_NETFootballAPI
             var item = await _handler.GetLeaguesByTeamIdAndSeasonAsync(15,2019);
             Assert.That(item.Count > 0);
         }
+        #endregion
+
+        #region GetLeagueByStringSearch
+
+        [Test]
+        public void GetLeagueByStringSearch_StringParameterMustNotBeNullOrWhiteSpace()
+        {
+            Assert.That(async () => await _handler.GetLeagueByStringSearch(""), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeagueByStringSearch_ShouldReturnValidLeague()
+        {
+            // Test API has the league Serie A available from Brazil
+            var validLeagueName = "Serie A";
+            var item = await _handler.GetLeagueByStringSearch(validLeagueName);
+            Assert.That(item.Name == validLeagueName);
+        }
+
+        #endregion
     }
 }

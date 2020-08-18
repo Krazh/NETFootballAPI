@@ -96,6 +96,29 @@ namespace NETFootballAPI
                 return null;
             }
         }
+
+        public async Task<League> GetLeagueByStringSearch(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search)) throw new ArgumentException();
+            search = search.Replace(' ', '_');
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/search/{search}");
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetFirstObjectFromJArray<League>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                Console.WriteLine(e);
+                return null;
+            }
+            
+            return null;
+        }
         
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
