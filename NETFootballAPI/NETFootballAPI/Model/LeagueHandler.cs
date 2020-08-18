@@ -19,7 +19,7 @@ namespace NETFootballAPI
             {
                 var content = await _client.GetStringAsync(_apiUrl + endpoint);
 
-                var jObj = (JArray) DeserializeJson(content, endpoint);
+                var jObj = DeserializeJson(content, endpoint);
             
                 var leagues = new List<League>();
 
@@ -38,20 +38,18 @@ namespace NETFootballAPI
 
         public async Task<League> GetLeagueById(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("Id must be greater than or equal to 0");
+            CheckIfIdIsLessThanOrEqualToZero(id);
             
             var endpoint = "leagues";
 
             try
             {
                 var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/league/{id}");
-                var jObj = (JArray) DeserializeJson(content, endpoint);
+                var jObj = DeserializeJson(content, endpoint);
 
                 if (jObj?.First == null) throw new NullReferenceException();
                 
-                var l = JsonConvert.DeserializeObject<League>(jObj.First.ToString()!);
-                return l;
+                return GetFirstObjectFromJArray<League>(jObj);
             }
             
             catch (Exception e)
@@ -60,7 +58,35 @@ namespace NETFootballAPI
                 Console.WriteLine(e);
                 return null;
             }
+        }
 
+        private static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Id must be greater than or equal to 0");
+        }
+
+        public async Task<League> GetLeagueByTeamId(int id)
+        {
+            CheckIfIdIsLessThanOrEqualToZero(id);
+
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/team/{id}");
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetFirstObjectFromJArray<League>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                Console.WriteLine(e);
+                return null;
+            }
+
+            return new League();
         }
     }
 }

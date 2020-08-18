@@ -35,8 +35,30 @@ namespace UnitTest_NETFootballAPI
         [Test]
         public async Task GetLeagueById_InvalidIdShouldReturnNullObject()
         {
-            var item = await _handler.GetLeagueById(999999999);
+            var item = await _handler.GetLeagueById(int.MaxValue);
             Assert.That(item == null);
+        }
+
+        [TestCase(-25, TestName = "Negative number")]
+        [TestCase(0, TestName = "Zero")]
+        public void GetLeagueByTeamId_IdShouldBeHigherThan0(int testId)
+        {
+            Assert.That(async () => await _handler.GetLeagueByTeamId(testId), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeagueByTeamId_InvalidIdShouldReturnNullObject()
+        {
+            var item = await _handler.GetLeagueByTeamId(int.MaxValue);
+            Assert.That(item == null);
+        }
+
+        [Test]
+        public async Task GetLeagueByTeamId_ShouldReturnValidTeam()
+        {
+            // Assert. Test api has 4 leagues available, Id 357 is Brazil and Team Id 15 is a team from Brazil.
+            var item = await _handler.GetLeagueByTeamId(15);
+            Assert.That(item.Id == "357");
         }
     }
 }

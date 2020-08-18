@@ -3,6 +3,7 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NETFootballAPI
 {
@@ -35,13 +36,19 @@ namespace NETFootballAPI
             _apiUrl = url;
         }
 
-        private object? DeserializeJson(string content, string endpoint)
+        private JArray DeserializeJson(string content, string endpoint)
         {
             var jDoc = JsonDocument.Parse(content);
             var jObj = JsonConvert.DeserializeObject(jDoc.RootElement.GetProperty("api").GetProperty(endpoint)
                 .ToString());
 
-            return jObj;
+            return (jObj as JArray)!;
+        }
+
+        private T GetFirstObjectFromJArray<T>(JArray array)
+        {
+            if (array.First == null) throw new NullReferenceException();
+            return JsonConvert.DeserializeObject<T>(array.First.ToString()!);
         }
     }
 } 
