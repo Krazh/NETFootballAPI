@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -78,6 +79,7 @@ namespace NETFootballAPI
         public async Task<List<League>> GetLeaguesByTeamIdAndSeasonAsync(int teamId, int season)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
+            CheckIfYearIsInValidRange(season);
 
             var endpoint = "leagues";
 
@@ -97,7 +99,7 @@ namespace NETFootballAPI
 
         public async Task<League> GetLeagueByStringSearchAsync(string search)
         {
-            if (string.IsNullOrWhiteSpace(search)) throw new ArgumentException();
+            if (string.IsNullOrWhiteSpace(search) || search.Length <3) throw new ArgumentException();
             CheckIfStringContainsSymbols(search);
             search = search.Replace(' ', '_');
             var endpoint = "leagues";
@@ -136,8 +138,68 @@ namespace NETFootballAPI
             }
         }
 
-        #region Private Methods
+        public async Task<List<League>> GetLeaguesByCountryAndSeasonAsync(string country, int season)
+        {
+            if (string.IsNullOrWhiteSpace(country)) throw new ArgumentException();
+            CheckIfStringContainsSymbols(country);
+            CheckIfYearIsInValidRange(season);
+            var endpoint = "leagues";
 
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/country/{country}/{season}");
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        public async Task<List<League>> GetLeaguesByCountryCodeAsync(string code)
+        {
+            if(string.IsNullOrWhiteSpace(code) || code.Length != 2) throw new ArgumentException();
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/country/{code}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        public async Task<List<League>> GetLeaguesByCountryCodeAndSeasonAsync(string code, int season)
+        {
+            if(string.IsNullOrWhiteSpace(code) || code.Length != 2) throw new ArgumentException();
+            CheckIfStringContainsSymbols(code);
+            CheckIfYearIsInValidRange(season);
+            var endpoint = "leagues";
+
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/country/{code}/{season}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        #region Private Methods
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
             if (id <= 0)
@@ -147,6 +209,12 @@ namespace NETFootballAPI
         private static void CheckIfStringContainsSymbols(string item)
         {
             if (Regex.IsMatch(item, "[!,@,#,$,%,^,&,*,?,~,£,(,)]")) throw new ArgumentException("String contains invalid symbols");
+        }
+
+        private static void CheckIfYearIsInValidRange(int year)
+        {
+            if (year <= 1900 || year >= (DateTime.Today.Year + 5))
+                throw new ArgumentOutOfRangeException();
         }
         #endregion
     }
