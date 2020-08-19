@@ -1,3 +1,3 @@
 # NETFootballAPI
 
-A .NET library for Football API located at https://www.api-football.com
+A .NET library for the Football API v2.3.9 located at https://www.api-football.com
