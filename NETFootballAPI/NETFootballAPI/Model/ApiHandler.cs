@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -36,6 +37,44 @@ namespace NETFootballAPI
             var unusedVar = new Uri(url); // Only used to test if string is a valid url
             
             _apiUrl = url;
+        }
+
+        public async Task<List<T>> GetListFromEndpoint<T>(string url, string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(endpoint)) throw new ArgumentNullException();
+            var unusedVar = new Uri(url); // Only used to test if string is a valid url
+
+            try
+            {
+                var content = await _client.GetStringAsync(url);
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<T>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null!;
+            }
+        }
+
+        public async Task<T> GetItemFromEndpoint<T>(string url, string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(endpoint)) throw new ArgumentNullException();
+            var unusedVar = new Uri(url); // Only used to test if string is a valid url
+            
+            try
+            {
+                var content = await _client.GetStringAsync(url);
+                var jObj = DeserializeJson(content, endpoint);
+
+                return GetFirstObjectFromJArray<T>(jObj);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return default(T)!;
+            }
         }
 
         private JArray DeserializeJson(string content, string endpoint)
