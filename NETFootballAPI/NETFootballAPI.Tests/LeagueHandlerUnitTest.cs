@@ -364,5 +364,30 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
+
+        #region GetLeaguesByType
+
+        [Test]
+        public void GetLeaguesByType_StringShouldNotBeNullOrWhitespace()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAsync(""), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GetLeaguesByType_StringShouldNotContainSymbols()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAsync("Braz!l"),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesByType_ShouldReturnListOfLeagues()
+        {
+            var type = "League";
+            var item = await _handler.GetLeaguesByTypeAsync(type);
+            Assert.That(item.Count > 0 && item[0].Type == type);
+        }
+
+        #endregion
     }
 }

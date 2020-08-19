@@ -46,7 +46,7 @@ namespace NETFootballAPI
 
             try
             {
-                var content = await _client.GetStringAsync(url);
+                var content = await _client.GetStringAsync(url.ToLower());
                 var array = DeserializeJson(content, endpoint);
 
                 return GetListFromJArray<T>(array);

@@ -121,6 +121,14 @@ namespace NETFootballAPI
             return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/current/{country}", endpoint);
         }
 
+        public async Task<List<League>> GetLeaguesByTypeAsync(string type)
+        {
+            if (string.IsNullOrWhiteSpace(type)) throw new ArgumentException();
+            CheckIfStringContainsSymbols(type);
+            var endpoint = "leagues";
+
+            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}", endpoint);
+        }
         #region Private Methods
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
