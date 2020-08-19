@@ -44,6 +44,13 @@ namespace UnitTest_NETFootballAPI
             Assert.That(item == null);
         }
 
+        [Test]
+        public async Task GetLeagueById_ShouldReturnValidLeague()
+        {
+            // League Id 357 is Serie A in Brazil that is available on the demo api
+            var item = await _handler.GetLeagueByIdAsync(357);
+            Assert.That(item != null && item.Id == "357");
+        }
 
         #endregion
         #region GetLeaguesByTeamId
@@ -262,6 +269,98 @@ namespace UnitTest_NETFootballAPI
         {
             var items = await _handler.GetLeaguesBySeasonAsync(2019);
             Assert.That(items.Count > 0 && items[0].Season == 2019);
+        }
+
+        #endregion
+        #region GetSeasonsAvailableForLeagueByLeagueId
+
+        [TestCase(-25, TestName = "Negative number")]
+        [TestCase(0, TestName = "Zero")]
+        public void GetSeasonsAvailableForLeague_IdShouldBeHigherThan0(int testId)
+        {
+            Assert.That(async () => await _handler.GetSeasonsAvailableForLeagueAsync(testId), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetSeasonsAvailableForLeague_InvalidIdShouldReturnNullObject()
+        {
+            var item = await _handler.GetSeasonsAvailableForLeagueAsync(int.MaxValue);
+            Assert.That(item == null);
+        }
+
+        [Test]
+        public async Task GetSeasonsAvailableForLeague_ShouldReturnValidSeason()
+        {
+            var item = await _handler.GetSeasonsAvailableForLeagueAsync(357);
+            Assert.That(item != null && item[0].Id == "357");
+        }
+
+        #endregion
+        #region GetSeasonsAvailableForLeagueByLeagueIdAndSeason
+
+        [TestCase(-25, TestName = "Negative number")]
+        [TestCase(0, TestName = "Zero")]
+        public void GetSeasonsAvailableForLeagueByLeagueIdAndSeason_IdShouldBeHigherThan0(int testId)
+        {
+            Assert.That(async () => await _handler.GetSeasonsAvailableForLeagueAsync(testId, 2019), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetSeasonsAvailableForLeagueByLeagueIdAndSeason_InvalidIdShouldReturnNullObject()
+        {
+            var item = await _handler.GetSeasonsAvailableForLeagueAsync(int.MaxValue,2019);
+            Assert.That(item == null);
+        }
+
+        [Test]
+        public async Task GetSeasonsAvailableForLeagueByLeagueIdAndSeason_ShouldReturnValidLeague()
+        {
+            // League Id 357 is Serie A in Brazil that is available on the demo api
+            var item = await _handler.GetSeasonsAvailableForLeagueAsync(357,2019);
+            Assert.That(item != null && item[0].Id == "357");
+        }
+        
+        [TestCase(1900, TestName = "The year is 1900")]
+        [TestCase(10000, TestName = "The year is 10000")]
+        public void GetSeasonsAvailableForLeagueByLeagueIdAndSeason_SeasonShouldBeValidYear ( int year)
+        {
+            Assert.That(async () => await _handler.GetSeasonsAvailableForLeagueAsync(357, year), Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        #endregion
+        #region GetCurrentLeagues
+
+        [Test]
+        public async Task GetCurrentLeagues_ReturnsSomething()
+        {
+            var items = await _handler.GetCurrentLeaguesAsync();
+            
+            Assert.That(items.Count > 0);
+        }
+
+        #endregion
+
+        #region GetCurrentLeaguesByCountry
+
+        [Test]
+        public void GetCurrentLeaguesByCountry_StringShouldNotBeNullOrWhitespace()
+        {
+            Assert.That(async () => await _handler.GetCurrentLeaguesByCountryAsync(""), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GetCurrentLeaguesByCountry_StringShouldNotContainSymbols()
+        {
+            Assert.That(async () => await _handler.GetCurrentLeaguesByCountryAsync("Braz!l"),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetCurrentLeaguesByCountry_ShouldReturnListOfLeagues()
+        {
+            var country = "Brazil";
+            var item = await _handler.GetCurrentLeaguesByCountryAsync(country);
+            Assert.That(item.Count > 0 && item[0].Country == country);
         }
 
         #endregion

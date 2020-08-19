@@ -218,6 +218,83 @@ namespace NETFootballAPI
             }
         }
 
+        public async Task<List<League>> GetSeasonsAvailableForLeagueAsync(int leagueId)
+        {
+            if (leagueId <= 0) throw new ArgumentException();
+            var endpoint = "leagues";
+            
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/seasonsavailable/{leagueId}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        public async Task<List<League>> GetSeasonsAvailableForLeagueAsync(int leagueId, int season)
+        {
+            if (leagueId <= 0) throw new ArgumentException();
+            CheckIfYearIsInValidRange(season);
+            var endpoint = "leagues";
+            
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/seasonsavailable/{leagueId}/{season}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        public async Task<List<League>> GetCurrentLeaguesAsync()
+        {
+            var endpoint = "leagues";
+            
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + "/current/");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
+        public async Task<List<League>> GetCurrentLeaguesByCountryAsync(string country)
+        {
+            if (string.IsNullOrWhiteSpace(country)) throw new ArgumentException();
+            CheckIfStringContainsSymbols(country);
+            var endpoint = "leagues";
+            
+            try
+            {
+                var content = await _client.GetStringAsync(_apiUrl + endpoint + $"/current/{country}");
+                var array = DeserializeJson(content, endpoint);
+
+                return GetListFromJArray<League>(array);
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
+            }
+        }
+
         #region Private Methods
         private static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
