@@ -67,7 +67,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetTeamByStringSearch
 
         [Test]
