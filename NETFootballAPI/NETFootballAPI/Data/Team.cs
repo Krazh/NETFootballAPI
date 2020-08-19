@@ -6,7 +6,7 @@ namespace NETFootballAPI
     public class Team
     {
         [JsonProperty("team_id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string? Code { get; set; }
         public string Logo { get; set; }
