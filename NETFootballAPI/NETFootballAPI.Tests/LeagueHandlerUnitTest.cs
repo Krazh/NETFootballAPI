@@ -387,7 +387,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetLeaguesByTypeAndCountry
 
         [TestCase("", "Brazil", TestName = "1st param empty, 2nd correct")]
@@ -412,6 +411,73 @@ namespace UnitTest_NETFootballAPI
             var country = "Brazil";
             var item = await _handler.GetLeaguesByTypeAndCountryAsync(type, country);
             Assert.That(item.Count > 0 && item[0].Type == type && item[0].Country == country);
+        }
+
+        #endregion
+        #region GetLeaguesByTypeAndCountryAndSeason
+
+        [TestCase("", "Brazil", TestName = "1st param empty, 2nd correct")]
+        [TestCase("League", "", TestName = "1st param correct, 2nd empty")]
+        public void GetLeaguesByTypeAndCountryAndSeason_StringShouldNotBeNullOrWhitespace(string type, string country)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndCountryAndSeasonAsync(type, country,2019), Throws.TypeOf<ArgumentException>());
+        }
+
+        [TestCase("Leag!es", "Brazil", TestName = "1st param empty, 2nd correct")]
+        [TestCase("Leagues", "Braz!l", TestName = "1st param correct, 2nd empty")]
+        public void GetLeaguesByTypeAndCountryAndSeason_StringShouldNotContainSymbols(string type, string country)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndCountryAndSeasonAsync(type, country,2019),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesByTypeAndCountryAndSeason_ShouldReturnListOfLeagues()
+        {
+            var type = "League";
+            var country = "Brazil";
+            var season = 2019;
+            var item = await _handler.GetLeaguesByTypeAndCountryAndSeasonAsync(type, country, season);
+            Assert.That(item.Count > 0 && item[0].Type == type && item[0].Country == country && item[0].Season == season);
+        }
+        
+        [TestCase(1900, TestName = "The year is 1900")]
+        [TestCase(10000, TestName = "The year is 10000")]
+        public void GetLeaguesByTypeAndCountryAndSeason_SeasonShouldBeValidYear ( int year)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndCountryAndSeasonAsync("League", "Brazil", year), Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        #endregion
+        #region GetLeaguesByTypeAndSeason
+
+        [Test]
+        public void GetLeaguesByTypeAndSeason_StringShouldNotBeNullOrWhitespace()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndSeasonAsync("",2019), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GetLeaguesByTypeAndSeason_StringShouldNotContainSymbols()
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndSeasonAsync("Braz!l",2019),
+                Throws.TypeOf<ArgumentException>());
+        }
+        
+        [TestCase(1900, TestName = "The year is 1900")]
+        [TestCase(10000, TestName = "The year is 10000")]
+        public void GetLeaguesByTypeAndSeason_SeasonShouldBeValidYear ( int year)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndSeasonAsync("League", year), Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesByTypeAndSeason_ShouldReturnListOfLeagues()
+        {
+            var type = "League";
+            var season = 2019;
+            var item = await _handler.GetLeaguesByTypeAndSeasonAsync(type,season);
+            Assert.That(item.Count > 0 && item[0].Type == type && item[0].Season == season);
         }
 
         #endregion
