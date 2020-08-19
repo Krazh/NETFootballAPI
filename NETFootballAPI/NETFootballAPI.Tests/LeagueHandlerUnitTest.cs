@@ -339,7 +339,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetCurrentLeaguesByCountry
 
         [Test]
@@ -364,7 +363,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetLeaguesByType
 
         [Test]
@@ -386,6 +384,34 @@ namespace UnitTest_NETFootballAPI
             var type = "League";
             var item = await _handler.GetLeaguesByTypeAsync(type);
             Assert.That(item.Count > 0 && item[0].Type == type);
+        }
+
+        #endregion
+
+        #region GetLeaguesByTypeAndCountry
+
+        [TestCase("", "Brazil", TestName = "1st param empty, 2nd correct")]
+        [TestCase("League", "", TestName = "1st param correct, 2nd empty")]
+        public void GetLeaguesByTypeAndCountry_StringShouldNotBeNullOrWhitespace(string type, string country)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndCountryAsync(type, country), Throws.TypeOf<ArgumentException>());
+        }
+
+        [TestCase("Leag!es", "Brazil", TestName = "1st param empty, 2nd correct")]
+        [TestCase("Leagues", "Braz!l", TestName = "1st param correct, 2nd empty")]
+        public void GetLeaguesByTypeAndCountry_StringShouldNotContainSymbols(string type, string country)
+        {
+            Assert.That(async () => await _handler.GetLeaguesByTypeAndCountryAsync(type, country),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLeaguesByTypeAndCountry_ShouldReturnListOfLeagues()
+        {
+            var type = "League";
+            var country = "Brazil";
+            var item = await _handler.GetLeaguesByTypeAndCountryAsync(type, country);
+            Assert.That(item.Count > 0 && item[0].Type == type && item[0].Country == country);
         }
 
         #endregion
