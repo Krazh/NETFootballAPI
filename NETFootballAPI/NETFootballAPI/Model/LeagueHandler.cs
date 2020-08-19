@@ -94,7 +94,7 @@ namespace NETFootballAPI
         {
             if (leagueId <= 0) throw new ArgumentException();
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsavailable/{leagueId}", endpoint);
+            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsAvailable/{leagueId}", endpoint);
         }
 
         public async Task<List<League>> GetSeasonsAvailableForLeagueAsync(int leagueId, int season)
@@ -102,7 +102,7 @@ namespace NETFootballAPI
             if (leagueId <= 0) throw new ArgumentException();
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsavailable/{leagueId}/{season}",
+            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsAvailable/{leagueId}/{season}",
                 endpoint);
         }
 

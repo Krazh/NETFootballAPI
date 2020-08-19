@@ -49,7 +49,7 @@ namespace NETFootballAPI
                 var content = await _client.GetStringAsync(url.ToLower());
                 var array = Helper.DeserializeJson(content, endpoint);
 
-                return GetListFromJArray<T>(array);
+                return Helper.GetListFromJArray<T>(array);
             }
             catch (Exception e)
             {
@@ -68,25 +68,13 @@ namespace NETFootballAPI
                 var content = await _client.GetStringAsync(url);
                 var jObj = Helper.DeserializeJson(content, endpoint);
 
-                return GetFirstObjectFromJArray<T>(jObj);
+                return Helper.GetFirstObjectFromJArray<T>(jObj);
             }
             catch (Exception e)
             {
                 // TODO Implement error logging
                 return default(T)!;
             }
-        }
-
-        private T GetFirstObjectFromJArray<T>(JArray array)
-        {
-            if (array.First == null) throw new NullReferenceException();
-            return JsonConvert.DeserializeObject<T>(array.First.ToString()!);
-        }
-
-        private List<T> GetListFromJArray<T>(JArray array)
-        {
-            if (array.First == null) throw new NullReferenceException();
-            return (from object ob in array select JsonConvert.DeserializeObject<T>(ob.ToString())).ToList();
         }
     }
 } 
