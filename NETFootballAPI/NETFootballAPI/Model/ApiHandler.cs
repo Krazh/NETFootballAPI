@@ -80,10 +80,9 @@ namespace NETFootballAPI
         private JArray DeserializeJson(string content, string endpoint)
         {
             var jDoc = JsonDocument.Parse(content);
-            var jObj = JsonConvert.DeserializeObject(jDoc.RootElement.GetProperty("api").GetProperty(endpoint)
-                .ToString());
+            var jObj = JsonConvert.DeserializeObject(jDoc.RootElement.GetProperty("api").GetProperty(endpoint).ToString());
 
-            return (jObj as JArray)!;
+            return new JArray(jObj);
         }
 
         private T GetFirstObjectFromJArray<T>(JArray array)
