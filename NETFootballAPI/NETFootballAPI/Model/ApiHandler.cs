@@ -47,7 +47,7 @@ namespace NETFootballAPI
             try
             {
                 var content = await _client.GetStringAsync(url.ToLower());
-                var array = DeserializeJson(content, endpoint);
+                var array = Helper.DeserializeJson(content, endpoint);
 
                 return GetListFromJArray<T>(array);
             }
@@ -66,7 +66,7 @@ namespace NETFootballAPI
             try
             {
                 var content = await _client.GetStringAsync(url);
-                var jObj = DeserializeJson(content, endpoint);
+                var jObj = Helper.DeserializeJson(content, endpoint);
 
                 return GetFirstObjectFromJArray<T>(jObj);
             }
@@ -75,14 +75,6 @@ namespace NETFootballAPI
                 // TODO Implement error logging
                 return default(T)!;
             }
-        }
-
-        private JArray DeserializeJson(string content, string endpoint)
-        {
-            var jDoc = JsonDocument.Parse(content);
-            var jObj = JsonConvert.DeserializeObject(jDoc.RootElement.GetProperty("api").GetProperty(endpoint).ToString());
-
-            return new JArray(jObj);
         }
 
         private T GetFirstObjectFromJArray<T>(JArray array)
