@@ -7,7 +7,7 @@ namespace UnitTest_NETFootballAPI
 {
     public class LeagueHandlerUnitTest
     {
-        private readonly ApiHandler _handler = new ApiHandler();
+        private readonly ILeagueHandler _handler = new LeagueHandler();
         [SetUp]
         public void Setup()
         {

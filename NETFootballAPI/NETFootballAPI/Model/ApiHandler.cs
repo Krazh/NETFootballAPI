@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -12,7 +13,7 @@ namespace NETFootballAPI
     public partial class ApiHandler
     {
         private string _apiKey = "";
-        private string _apiUrl = "";
+        internal string _apiUrl = "";
         private readonly HttpClient _client;
 
         public ApiHandler()
@@ -76,5 +77,25 @@ namespace NETFootballAPI
                 return default(T)!;
             }
         }
+        
+        #region Internal Methods
+
+        internal static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Id must be greater than or equal to 0");
+        }
+
+        internal static void CheckIfStringContainsSymbols(string item)
+        {
+            if (Regex.IsMatch(item, "[!,@,#,$,%,^,&,*,?,~,£,(,)]")) throw new ArgumentException("String contains invalid symbols");
+        }
+
+        internal static void CheckIfYearIsInValidRange(int year)
+        {
+            if (year <= 1900 || year >= (DateTime.Today.Year + 5))
+                throw new ArgumentOutOfRangeException();
+        }
+        #endregion
     }
 } 

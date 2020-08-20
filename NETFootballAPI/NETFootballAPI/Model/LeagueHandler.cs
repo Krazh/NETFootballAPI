@@ -11,7 +11,8 @@ using Newtonsoft.Json.Linq;
 
 namespace NETFootballAPI
 {
-    public partial class ApiHandler
+
+    public class LeagueHandler : ApiHandler, ILeagueHandler
     {
         public async Task<List<League>> GetAllLeaguesAsync()
         {
@@ -161,23 +162,6 @@ namespace NETFootballAPI
 
             return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}/{season}", endpoint);
         }
-        #region Private Methods
-        private static void CheckIfIdIsLessThanOrEqualToZero(int id)
-        {
-            if (id <= 0)
-                throw new ArgumentException("Id must be greater than or equal to 0");
-        }
-
-        private static void CheckIfStringContainsSymbols(string item)
-        {
-            if (Regex.IsMatch(item, "[!,@,#,$,%,^,&,*,?,~,£,(,)]")) throw new ArgumentException("String contains invalid symbols");
-        }
-
-        private static void CheckIfYearIsInValidRange(int year)
-        {
-            if (year <= 1900 || year >= (DateTime.Today.Year + 5))
-                throw new ArgumentOutOfRangeException();
-        }
-        #endregion
+        
     }
 }
