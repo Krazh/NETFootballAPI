@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace NETFootballAPI
 {
-    public interface ITeamHandler
+    public interface ITeamHandler : IBaseApi
     {
         Task<Team> GetTeamByIdAsync(int teamId);
         Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId);
