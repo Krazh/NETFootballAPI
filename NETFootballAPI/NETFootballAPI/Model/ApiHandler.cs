@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace NETFootballAPI
 {
-    public partial class ApiHandler
+    public class ApiHandler : IBaseApi
     {
         private string _apiKey = "";
         internal string ApiUrl = "";

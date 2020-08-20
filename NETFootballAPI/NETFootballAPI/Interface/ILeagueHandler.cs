@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 
 namespace NETFootballAPI
 {
-    public interface ILeagueHandler
+    public interface ILeagueHandler : IBaseApi
     {
-        void SetApiKey(string apiKey);
-        void SetApiUrl(string apiUrl);
         Task<List<League>> GetAllLeaguesAsync();
         Task<League> GetLeagueByIdAsync(int id);
         Task<List<League>> GetLeaguesByTeamIdAsync(int teamId);
