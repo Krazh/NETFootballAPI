@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NETFootballAPI
 {
-    public partial class ApiHandler
+    public class TeamHandler : ApiHandler, ITeamHandler
     {
         public async Task<Team> GetTeamByIdAsync(int teamId)
         {
