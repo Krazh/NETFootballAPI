@@ -13,7 +13,7 @@ namespace NETFootballAPI
     public partial class ApiHandler
     {
         private string _apiKey = "";
-        internal string _apiUrl = "";
+        internal string ApiUrl = "";
         private readonly HttpClient _client;
 
         public ApiHandler()
@@ -36,7 +36,7 @@ namespace NETFootballAPI
  
             var unusedVar = new Uri(url); // Only used to test if string is a valid url
             
-            _apiUrl = url;
+            ApiUrl = url;
         }
 
         public async Task<List<T>> GetListFromEndpoint<T>(string url, string endpoint)

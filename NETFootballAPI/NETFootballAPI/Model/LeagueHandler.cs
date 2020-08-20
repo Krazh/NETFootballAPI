@@ -17,21 +17,21 @@ namespace NETFootballAPI
         public async Task<List<League>> GetAllLeaguesAsync()
         {
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint, endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint, endpoint);
         }
 
         public async Task<League> GetLeagueByIdAsync(int id)
         {
             CheckIfIdIsLessThanOrEqualToZero(id);
             var endpoint = "leagues";
-            return await GetItemFromEndpoint<League>(_apiUrl + endpoint + $"/league/{id}", endpoint);
+            return await GetItemFromEndpoint<League>(ApiUrl + endpoint + $"/league/{id}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTeamIdAsync(int teamId)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/team/{teamId}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/team/{teamId}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTeamIdAndSeasonAsync(int teamId, int season)
@@ -39,7 +39,7 @@ namespace NETFootballAPI
             CheckIfIdIsLessThanOrEqualToZero(teamId);
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/team/{teamId}/{season}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/team/{teamId}/{season}", endpoint);
         }
 
         public async Task<League> GetLeagueByStringSearchAsync(string search)
@@ -48,7 +48,7 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(search);
             search = search.Replace(' ', '_');
             var endpoint = "leagues";
-            return await GetItemFromEndpoint<League>(_apiUrl + endpoint + $"/search/{search}", endpoint);
+            return await GetItemFromEndpoint<League>(ApiUrl + endpoint + $"/search/{search}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByCountryAsync(string country)
@@ -56,7 +56,7 @@ namespace NETFootballAPI
             if (string.IsNullOrWhiteSpace(country)) throw new ArgumentException();
             CheckIfStringContainsSymbols(country);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/country/{country}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/country/{country}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByCountryAndSeasonAsync(string country, int season)
@@ -65,14 +65,14 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(country);
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/country/{country}/{season}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/country/{country}/{season}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByCountryCodeAsync(string code)
         {
             if(string.IsNullOrWhiteSpace(code) || code.Length != 2) throw new ArgumentException();
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/country/{code}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/country/{code}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByCountryCodeAndSeasonAsync(string code, int season)
@@ -81,21 +81,21 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(code);
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/country/{code}/{season}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/country/{code}/{season}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesBySeasonAsync(int year)
         {
             CheckIfYearIsInValidRange(year);
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/season/{year}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/season/{year}", endpoint);
         }
 
         public async Task<List<League>> GetSeasonsAvailableForLeagueAsync(int leagueId)
         {
             if (leagueId <= 0) throw new ArgumentException();
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsAvailable/{leagueId}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/seasonsAvailable/{leagueId}", endpoint);
         }
 
         public async Task<List<League>> GetSeasonsAvailableForLeagueAsync(int leagueId, int season)
@@ -103,14 +103,14 @@ namespace NETFootballAPI
             if (leagueId <= 0) throw new ArgumentException();
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues"; 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsAvailable/{leagueId}/{season}",
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/seasonsAvailable/{leagueId}/{season}",
                 endpoint);
         }
 
         public async Task<List<League>> GetCurrentLeaguesAsync()
         {
             var endpoint = "leagues";
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + "/current/", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + "/current/", endpoint);
         }
 
         public async Task<List<League>> GetCurrentLeaguesByCountryAsync(string country)
@@ -119,7 +119,7 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(country);
             var endpoint = "leagues";
 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/current/{country}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/current/{country}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTypeAsync(string type)
@@ -128,7 +128,7 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(type);
             var endpoint = "leagues";
 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/type/{type}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTypeAndCountryAsync(string type, string country)
@@ -138,7 +138,7 @@ namespace NETFootballAPI
             CheckIfStringContainsSymbols(country);
             var endpoint = "leagues";
 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}/{country}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/type/{type}/{country}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTypeAndCountryAndSeasonAsync(string type, string country,
@@ -150,7 +150,7 @@ namespace NETFootballAPI
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}/{country}/{season}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/type/{type}/{country}/{season}", endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTypeAndSeasonAsync(string type, int season)
@@ -160,7 +160,7 @@ namespace NETFootballAPI
             CheckIfYearIsInValidRange(season);
             var endpoint = "leagues";
 
-            return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/type/{type}/{season}", endpoint);
+            return await GetListFromEndpoint<League>(ApiUrl + endpoint + $"/type/{type}/{season}", endpoint);
         }
         
     }

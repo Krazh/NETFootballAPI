@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NETFootballAPI
 {
-    public partial class ApiHandler
+    public class StatisticsHandler : ApiHandler, IStatisticsHandler
     {
         public async Task<Statistics> GetStatisticsByTeamIdAndLeagueIdAsync(int teamId, int leagueId)
         {
@@ -12,7 +12,7 @@ namespace NETFootballAPI
             CheckIfIdIsLessThanOrEqualToZero(leagueId);
             var endpoint = "statistics";
 
-            return await GetItemFromEndpoint<Statistics>(_apiUrl + endpoint + $"/{leagueId}/{teamId}", endpoint);
+            return await GetItemFromEndpoint<Statistics>(ApiUrl + endpoint + $"/{leagueId}/{teamId}", endpoint);
         }
 
         public async Task<Statistics> GetStatisticsByTeamIdAndLeagueIdAndEndDateAsync(int teamId, int leagueId,
@@ -24,7 +24,7 @@ namespace NETFootballAPI
             var endpoint = "statistics";
 
             return await GetItemFromEndpoint<Statistics>(
-                _apiUrl + endpoint + $"/{leagueId}/{teamId}/{date:yyyy-MM-dd}", endpoint);
+                ApiUrl + endpoint + $"/{leagueId}/{teamId}/{date:yyyy-MM-dd}", endpoint);
         }
     }
 }

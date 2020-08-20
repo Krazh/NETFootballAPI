@@ -7,7 +7,7 @@ namespace UnitTest_NETFootballAPI
 {
     public class StatisticsUnitTest
     {
-        private readonly ApiHandler _handler = new ApiHandler();
+        private readonly IStatisticsHandler _handler = new StatisticsHandler();
         [SetUp]
         public void Setup()
         {

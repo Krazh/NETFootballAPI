@@ -29,15 +29,5 @@ namespace NETFootballAPI
             int season);
 
         Task<List<League>> GetLeaguesByTypeAndSeasonAsync(string type, int season);
-        Task<Statistics> GetStatisticsByTeamIdAndLeagueIdAsync(int teamId, int leagueId);
-
-        Task<Statistics> GetStatisticsByTeamIdAndLeagueIdAndEndDateAsync(int teamId, int leagueId,
-            DateTime date);
-
-        Task<Team> GetTeamByIdAsync(int teamId);
-        Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId);
-
-        /// <param name="search">Should not contain accented or special characters. IE: ê should be replace with e</param>
-        Task<Team> GetTeamByStringSearchAsync(string search);
     }
 }
