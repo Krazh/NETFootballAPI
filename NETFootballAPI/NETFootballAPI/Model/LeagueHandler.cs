@@ -101,7 +101,7 @@ namespace NETFootballAPI
         {
             if (leagueId <= 0) throw new ArgumentException();
             CheckIfYearIsInValidRange(season);
-            var endpoint = "leagues";
+            var endpoint = "leagues"; 
             return await GetListFromEndpoint<League>(_apiUrl + endpoint + $"/seasonsAvailable/{leagueId}/{season}",
                 endpoint);
         }

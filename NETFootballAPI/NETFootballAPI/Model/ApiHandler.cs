@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace NETFootballAPI
 {
@@ -47,9 +46,8 @@ namespace NETFootballAPI
             try
             {
                 var content = await _client.GetStringAsync(url.ToLower());
-                var array = Helper.DeserializeJson(content, endpoint);
-
-                return Helper.GetListFromJArray<T>(array);
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint).GetRawText();
+                return JsonConvert.DeserializeObject<List<T>>(jsonElement);
             }
             catch (Exception e)
             {
@@ -62,13 +60,15 @@ namespace NETFootballAPI
         {
             if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(endpoint)) throw new ArgumentNullException();
             var unusedVar = new Uri(url); // Only used to test if string is a valid url
-            
+
             try
             {
                 var content = await _client.GetStringAsync(url);
-                var jObj = Helper.DeserializeJson(content, endpoint);
-
-                return Helper.GetFirstObjectFromJArray<T>(jObj);
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint)
+                    .GetRawText();
+                jsonElement = jsonElement.TrimStart('[');
+                jsonElement = jsonElement.TrimEnd(']');
+                return JsonConvert.DeserializeObject<T>(jsonElement);
             }
             catch (Exception e)
             {
