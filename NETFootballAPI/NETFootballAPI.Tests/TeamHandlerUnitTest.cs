@@ -7,7 +7,7 @@ namespace UnitTest_NETFootballAPI
 {
     public class TeamHandlerUnitTest
     {
-        private readonly ApiHandler _handler = new ApiHandler();
+        private readonly ITeamHandler _handler = new TeamHandler();
         [SetUp]
         public void Setup()
         {
@@ -52,10 +52,10 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetTeamsByLeagueId_InvalidIdShouldReturnNullObject()
+        public async Task GetTeamsByLeagueId_InvalidIdShouldReturnEmptyList()
         {
             var item = await _handler.GetTeamsByLeagueIdAsync(int.MaxValue);
-            Assert.That(item == null);
+            Assert.That(item.Count == 0);
         }
 
         [Test]

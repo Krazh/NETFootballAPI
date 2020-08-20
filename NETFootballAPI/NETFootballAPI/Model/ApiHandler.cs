@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace NETFootballAPI
 {
     public partial class ApiHandler
     {
         private string _apiKey = "";
-        private string _apiUrl = "";
+        internal string ApiUrl = "";
         private readonly HttpClient _client;
 
         public ApiHandler()
@@ -36,7 +36,7 @@ namespace NETFootballAPI
  
             var unusedVar = new Uri(url); // Only used to test if string is a valid url
             
-            _apiUrl = url;
+            ApiUrl = url;
         }
 
         public async Task<List<T>> GetListFromEndpoint<T>(string url, string endpoint)
@@ -47,9 +47,8 @@ namespace NETFootballAPI
             try
             {
                 var content = await _client.GetStringAsync(url.ToLower());
-                var array = DeserializeJson(content, endpoint);
-
-                return GetListFromJArray<T>(array);
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint).GetRawText();
+                return JsonConvert.DeserializeObject<List<T>>(jsonElement);
             }
             catch (Exception e)
             {
@@ -62,13 +61,15 @@ namespace NETFootballAPI
         {
             if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(endpoint)) throw new ArgumentNullException();
             var unusedVar = new Uri(url); // Only used to test if string is a valid url
-            
+
             try
             {
                 var content = await _client.GetStringAsync(url);
-                var jObj = DeserializeJson(content, endpoint);
-
-                return GetFirstObjectFromJArray<T>(jObj);
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint)
+                    .GetRawText();
+                jsonElement = jsonElement.TrimStart('[');
+                jsonElement = jsonElement.TrimEnd(']');
+                return JsonConvert.DeserializeObject<T>(jsonElement);
             }
             catch (Exception e)
             {
@@ -76,25 +77,25 @@ namespace NETFootballAPI
                 return default(T)!;
             }
         }
+        
+        #region Internal Methods
 
-        private JArray DeserializeJson(string content, string endpoint)
+        internal static void CheckIfIdIsLessThanOrEqualToZero(int id)
         {
-            var jDoc = JsonDocument.Parse(content);
-            var jObj = JsonConvert.DeserializeObject(jDoc.RootElement.GetProperty("api").GetProperty(endpoint).ToString());
-
-            return new JArray(jObj);
+            if (id <= 0)
+                throw new ArgumentException("Id must be greater than or equal to 0");
         }
 
-        private T GetFirstObjectFromJArray<T>(JArray array)
+        internal static void CheckIfStringContainsSymbols(string item)
         {
-            if (array.First == null) throw new NullReferenceException();
-            return JsonConvert.DeserializeObject<T>(array.First.ToString()!);
+            if (Regex.IsMatch(item, "[!,@,#,$,%,^,&,*,?,~,£,(,)]")) throw new ArgumentException("String contains invalid symbols");
         }
 
-        private List<T> GetListFromJArray<T>(JArray array)
+        internal static void CheckIfYearIsInValidRange(int year)
         {
-            if (array.First == null) throw new NullReferenceException();
-            return (from object ob in array select JsonConvert.DeserializeObject<T>(ob.ToString())).ToList();
+            if (year <= 1900 || year >= (DateTime.Today.Year + 5))
+                throw new ArgumentOutOfRangeException();
         }
+        #endregion
     }
 } 

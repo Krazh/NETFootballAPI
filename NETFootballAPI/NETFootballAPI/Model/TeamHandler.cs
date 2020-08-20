@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace NETFootballAPI
 {
-    public partial class ApiHandler
+    public class TeamHandler : ApiHandler, ITeamHandler
     {
         public async Task<Team> GetTeamByIdAsync(int teamId)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
             var endpoint = "teams";
 
-            return await GetItemFromEndpoint<Team>(_apiUrl + endpoint + $"/team/{teamId}", endpoint);
+            return await GetItemFromEndpoint<Team>(ApiUrl + endpoint + $"/team/{teamId}", endpoint);
         }
 
         public async Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId)
@@ -19,7 +19,7 @@ namespace NETFootballAPI
             CheckIfIdIsLessThanOrEqualToZero(leagueId);
             var endpoint = "teams";
 
-            return await GetListFromEndpoint<Team>(_apiUrl + endpoint + $"/league/{leagueId}", endpoint);
+            return await GetListFromEndpoint<Team>(ApiUrl + endpoint + $"/league/{leagueId}", endpoint);
         }
         
         /// <param name="search">Should not contain accented or special characters. IE: ê should be replace with e</param>
@@ -30,7 +30,7 @@ namespace NETFootballAPI
             var endpoint = "teams";
             search = search.Replace(' ', '_');
 
-            return await GetItemFromEndpoint<Team>(_apiUrl + endpoint + $"/search/{search}", endpoint);
+            return await GetItemFromEndpoint<Team>(ApiUrl + endpoint + $"/search/{search}", endpoint);
         }
     }
 }

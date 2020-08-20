@@ -7,7 +7,7 @@ namespace UnitTest_NETFootballAPI
 {
     public class LeagueHandlerUnitTest
     {
-        private readonly ApiHandler _handler = new ApiHandler();
+        private readonly ILeagueHandler _handler = new LeagueHandler();
         [SetUp]
         public void Setup()
         {
@@ -282,10 +282,10 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetSeasonsAvailableForLeague_InvalidIdShouldReturnNullObject()
+        public async Task GetSeasonsAvailableForLeague_InvalidIdShouldReturnEmptyList()
         {
             var item = await _handler.GetSeasonsAvailableForLeagueAsync(int.MaxValue);
-            Assert.That(item == null);
+            Assert.That(item.Count == 0);
         }
 
         [Test]
@@ -306,10 +306,10 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetSeasonsAvailableForLeagueByLeagueIdAndSeason_InvalidIdShouldReturnNullObject()
+        public async Task GetSeasonsAvailableForLeagueByLeagueIdAndSeason_InvalidIdShouldReturnEmptyList()
         {
             var item = await _handler.GetSeasonsAvailableForLeagueAsync(int.MaxValue,2019);
-            Assert.That(item == null);
+            Assert.That(item.Count == 0);
         }
 
         [Test]
