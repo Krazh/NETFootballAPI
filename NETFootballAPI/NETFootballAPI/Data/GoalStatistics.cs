@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace NETFootballAPI
 {
-    public class Statistics
+    public class GoalStatistics
     {
         [JsonProperty("matchs")]
         public Matches Matches { get; set; }
