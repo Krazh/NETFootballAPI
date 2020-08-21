@@ -14,11 +14,11 @@ namespace NETFootballAPI
     {
         private string _apiKey = "";
         internal string ApiUrl = "";
-        private readonly HttpClient _client;
+        internal readonly HttpClient Client;
 
         public ApiHandler()
         {
-            _client = new HttpClient();
+            Client = new HttpClient();
         }
 
         public void SetApiKey(string key)
@@ -26,7 +26,7 @@ namespace NETFootballAPI
             if (string.IsNullOrWhiteSpace(key))
                 throw new ArgumentNullException(nameof(key));
             _apiKey = key;
-            _client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
+            Client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
         }
 
         public void SetApiUrl(string url)
@@ -46,7 +46,7 @@ namespace NETFootballAPI
 
             try
             {
-                var content = await _client.GetStringAsync(url.ToLower());
+                var content = await Client.GetStringAsync(url.ToLower());
                 var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint).GetRawText();
                 return JsonConvert.DeserializeObject<List<T>>(jsonElement);
             }
@@ -64,7 +64,7 @@ namespace NETFootballAPI
 
             try
             {
-                var content = await _client.GetStringAsync(url);
+                var content = await Client.GetStringAsync(url);
                 var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint)
                     .GetRawText();
                 jsonElement = jsonElement.TrimStart('[');
