@@ -34,7 +34,7 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetTeamById_ShouldReturnValidLeague()
+        public async Task GetTeamById_ShouldReturnValidTeam()
         {
             // TeamId 15 is a Serie A Team in Brazil that is available on the demo api
             var item = await _handler.GetTeamByIdAsync(15);
