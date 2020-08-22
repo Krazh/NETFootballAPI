@@ -6,7 +6,7 @@ namespace NETFootballAPI
 {
     public interface IFixtureHandler : IBaseApi
     {
-        Task<Fixture> GetFixtureByAsync(int fixtureId, string timeZone = null);
+        Task<Fixture> GetFixtureByIdAsync(int fixtureId, string timeZone = null);
         Task<List<Fixture>> GetAllLiveFixturesAsync();
         Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId, string timeZone = null);
         Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date, string timeZone = null);
