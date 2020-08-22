@@ -15,14 +15,35 @@ namespace NETFootballAPI
             return await GetItemFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllLiveFixturesAsync()
+        /// <summary>
+        /// Unsure how to test this tbh as this only returns values when matches are happening. 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Fixture>> GetAllLiveFixturesAsync()
         {
-            throw new NotImplementedException();
+            var url = ApiUrl + Endpoint + "/live";
+
+            return await GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId, string timeZone = null)
+        /// <summary>
+        /// Can't test if the method returns a valid response since it only does it while there are matches playing
+        /// </summary>
+        /// <param name="leagueId"></param>
+        /// <param name="timeZone"></param>
+        /// <returns></returns>
+        public async Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId, string timeZone = null)
         {
-            throw new NotImplementedException();
+            var leagueIds = "";
+            foreach (int i in leagueId)
+            {
+                leagueIds += string.IsNullOrWhiteSpace(leagueIds) ? "" : "-";
+                CheckIfIdIsLessThanOrEqualToZero(i);
+                leagueIds += i.ToString();
+            }
+            var url = ApiUrl + Endpoint + $"/live/{leagueIds}";
+
+            return await GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date, string timeZone = null)
