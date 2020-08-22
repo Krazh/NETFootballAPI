@@ -22,8 +22,8 @@ namespace NETFootballAPI
         public string Referee { get; set; }
         public Team HomeTeam { get; set; }
         public Team AwayTeam { get; set; }
-        public int GoalsHomeTeam { get; set; }
-        public int GoalsAwayTeam { get; set; }
+        public int? GoalsHomeTeam { get; set; }
+        public int? GoalsAwayTeam { get; set; }
         public Score Score { get; set; }
     }
 }
