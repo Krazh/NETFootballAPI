@@ -6,13 +6,13 @@ namespace NETFootballAPI
 {
     public class StatisticsHandler : ApiHandler, IStatisticsHandler
     {
+        private const string Endpoint = "statistics";
         public async Task<GoalStatistics> GetStatisticsByTeamIdAndLeagueIdAsync(int teamId, int leagueId)
         {
             CheckIfIdIsLessThanOrEqualToZero(teamId);
             CheckIfIdIsLessThanOrEqualToZero(leagueId);
-            var endpoint = "statistics";
 
-            return await GetItemFromEndpoint<GoalStatistics>(ApiUrl + endpoint + $"/{leagueId}/{teamId}", endpoint);
+            return await GetItemFromEndpoint<GoalStatistics>(ApiUrl + Endpoint + $"/{leagueId}/{teamId}", Endpoint);
         }
 
         public async Task<GoalStatistics> GetStatisticsByTeamIdAndLeagueIdAndEndDateAsync(int teamId, int leagueId,
@@ -21,10 +21,9 @@ namespace NETFootballAPI
             CheckIfIdIsLessThanOrEqualToZero(teamId);
             CheckIfIdIsLessThanOrEqualToZero(leagueId);
             CheckIfYearIsInValidRange(date.Year);
-            var endpoint = "statistics";
 
             return await GetItemFromEndpoint<GoalStatistics>(
-                ApiUrl + endpoint + $"/{leagueId}/{teamId}/{date:yyyy-MM-dd}", endpoint);
+                ApiUrl + Endpoint + $"/{leagueId}/{teamId}/{date:yyyy-MM-dd}", Endpoint);
         }
     }
 }
