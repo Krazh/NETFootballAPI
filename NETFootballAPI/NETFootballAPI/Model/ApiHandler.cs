@@ -96,6 +96,11 @@ namespace NETFootballAPI
             if (year <= 1900 || year >= (DateTime.Today.Year + 5))
                 throw new ArgumentOutOfRangeException();
         }
+
+        internal static string AppendTimeZoneToUrl(string url, string timeZone)
+        {
+            return url + $"?timezone={timeZone}";
+        }
         #endregion
     }
 } 
