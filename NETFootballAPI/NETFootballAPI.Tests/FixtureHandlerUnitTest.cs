@@ -137,5 +137,39 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
+        #region GetAllFixturesByLeagueAndRound
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName = "Test with 0")]
+        public void GetAllFixturesByLeagueAndRound_IdShouldNotBeLessThanOrEqualToZero(int id)
+        {
+            var validRound = "Regular_Season_-_1";
+            Assert.That(async () => await _handler.GetAllFixturesByLeagueAndRoundAsync(id, validRound), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeagueAndRound_InvalidIdShouldReturnEmptyList()
+        {
+            var validRound = "Regular_Season_-_1";
+            var item = await _handler.GetAllFixturesByLeagueAndRoundAsync(int.MaxValue, validRound);
+            Assert.That(item.Count == 0);
+        }
+
+        [TestCase("round 1", TestName = "With Space")]
+        [TestCase("Round1!", TestName = "With Symbols")]
+        public void GetAllFixturesByLeagueAndRound_InvalidStringShouldReturnEmptyList(string test)
+        {
+            Assert.That(async () => await _handler.GetAllFixturesByLeagueAndRoundAsync(357, test), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeagueAndRound_ShouldReturnPopulatedList()
+        {
+            var validRound = "Regular_Season_-_1";
+            var item = await _handler.GetAllFixturesByLeagueAndRoundAsync(357, validRound);
+            Assert.That(item.Count > 0);
+        }
+
+        #endregion
     }
 }

@@ -60,44 +60,62 @@ namespace NETFootballAPI
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllFixturesByLeagueAndDateAsync(int leagueId, DateTime date, string timeZone = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="leagueId"></param>
+        /// <param name="date"></param>
+        /// <param name="timeZone"></param>
+        /// <returns></returns>
+        public Task<List<Fixture>> GetAllFixturesByLeagueAndDateAsync(int leagueId, DateTime date)
         {
             CheckIfIdIsLessThanOrEqualToZero(leagueId);
             var url = ApiUrl + Endpoint + $"/league/{leagueId}/{FormatDateTime(date)}";
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllFixturesByLeagueAndRoundAsync(int leagueId, string round, string timeZone = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="leagueId">Must be a valid integer higher than zero.</param>
+        /// <param name="round">Valid returns from /fixtures/rounds endpoint only. Spaces should be replaced with underscores</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public Task<List<Fixture>> GetAllFixturesByLeagueAndRoundAsync(int leagueId, string round)
+        {
+            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfStringContainsSymbols(round);
+            if (round.Contains(' ')) throw new ArgumentException();
+            var url = ApiUrl + Endpoint + $"/league/{leagueId}/{round}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
+        }
+
+        public Task<List<Fixture>> GetNextNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Fixture>> GetNextNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures, string timeZone = null)
+        public Task<List<Fixture>> GetLastNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Fixture>> GetLastNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures, string timeZone = null)
+        public Task<List<Fixture>> GetAllFixturesByTeamAsync(int teamId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Fixture>> GetAllFixturesByTeamAsync(int teamId, string timeZone = null)
+        public Task<List<Fixture>> GetAllFixturesByTeamAndLeagueAsync(int teamId, int leagueId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Fixture>> GetAllFixturesByTeamAndLeagueAsync(int teamId, int leagueId, string timeZone = null)
+        public Task<List<Fixture>> GetNextNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Fixture>> GetNextNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures, string timeZone = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Fixture>> GetLastNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures, string timeZone = null)
+        public Task<List<Fixture>> GetLastNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures)
         {
             throw new NotImplementedException();
         }
