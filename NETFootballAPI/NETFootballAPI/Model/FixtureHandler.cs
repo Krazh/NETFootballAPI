@@ -132,7 +132,10 @@ namespace NETFootballAPI
 
         public Task<List<Fixture>> GetAllFixturesByTeamAndLeagueAsync(int teamId, int leagueId)
         {
-            throw new NotImplementedException();
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
+            var url = ApiUrl + Endpoint + $"/team/{teamId}/{leagueId}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetNextNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures)

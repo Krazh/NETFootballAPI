@@ -233,7 +233,6 @@ namespace UnitTest_NETFootballAPI
         }
         
         #endregion
-
         #region GetAllFixturesByTeam
 
         [TestCase(-25, TestName = "Test with negative number")]
@@ -254,6 +253,34 @@ namespace UnitTest_NETFootballAPI
         public async Task GetAllFixturesByTeam_ShouldReturnPopulatedList()
         {
             var item = await _handler.GetAllFixturesByTeamAsync(15);
+            Assert.That(item.Count > 0);
+        }
+
+        #endregion
+
+        #region GetAllFixturesByTeamAndLeague
+
+        [TestCase(-25, 357, TestName = "Test with negative number")]
+        [TestCase(0, 357, TestName = "Test with 0")]
+        [TestCase(15, -25, TestName = "Test with negative number")]
+        [TestCase(15, 0, TestName = "Test with 0")]
+        public void GetAllFixturesByTeamAndLeague_IdShouldNotBeLessThanOrEqualToZero(int id, int id2)
+        {
+            Assert.That(async () => await _handler.GetAllFixturesByTeamAndLeagueAsync(id, id2), Throws.TypeOf<ArgumentException>());
+        }
+
+        [TestCase(int.MaxValue, 357, TestName = "Invalid team_id")]
+        [TestCase(15, int.MaxValue, TestName = "Invalid league_id")]
+        public async Task GetAllFixturesByTeamAndLeague_InvalidIdShouldReturnEmptyList(int id, int id2)
+        {
+            var item = await _handler.GetAllFixturesByTeamAndLeagueAsync(id, id2);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetAllFixturesByTeamAndLeague_ShouldReturnPopulatedList()
+        {
+            var item = await _handler.GetAllFixturesByTeamAndLeagueAsync(15,357);
             Assert.That(item.Count > 0);
         }
 
