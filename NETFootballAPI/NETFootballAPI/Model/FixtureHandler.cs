@@ -130,6 +130,12 @@ namespace NETFootballAPI
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="teamId">Must be a valid integer higher than zero.</param>
+        /// <param name="leagueId">Must be a valid integer higher than zero.</param>
+        /// <returns></returns>
         public Task<List<Fixture>> GetAllFixturesByTeamAndLeagueAsync(int teamId, int leagueId)
         {
             CheckIfIntegerIsLessThanOrEqualToZero(teamId);
