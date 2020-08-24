@@ -11,9 +11,7 @@ namespace UnitTest_NETFootballAPI
         [SetUp]
         public void Setup()
         {
-            var key = "thisIsATestString";
             var url = "https://www.api-football.com/demo/v2/";
-            _handler.SetApiKey(key);
             _handler.SetApiUrl(url);
         }
 
@@ -34,7 +32,7 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetTeamById_ShouldReturnValidLeague()
+        public async Task GetTeamById_ShouldReturnValidTeam()
         {
             // TeamId 15 is a Serie A Team in Brazil that is available on the demo api
             var item = await _handler.GetTeamByIdAsync(15);

@@ -14,11 +14,11 @@ namespace NETFootballAPI
     {
         private string _apiKey = "";
         internal string ApiUrl = "";
-        private readonly HttpClient _client;
+        internal readonly HttpClient Client;
 
         public ApiHandler()
         {
-            _client = new HttpClient();
+            Client = new HttpClient();
         }
 
         public void SetApiKey(string key)
@@ -26,7 +26,7 @@ namespace NETFootballAPI
             if (string.IsNullOrWhiteSpace(key))
                 throw new ArgumentNullException(nameof(key));
             _apiKey = key;
-            _client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
+            Client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
         }
 
         public void SetApiUrl(string url)
@@ -46,7 +46,7 @@ namespace NETFootballAPI
 
             try
             {
-                var content = await _client.GetStringAsync(url.ToLower());
+                var content = await Client.GetStringAsync(url.ToLower());
                 var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint).GetRawText();
                 return JsonConvert.DeserializeObject<List<T>>(jsonElement);
             }
@@ -64,7 +64,7 @@ namespace NETFootballAPI
 
             try
             {
-                var content = await _client.GetStringAsync(url);
+                var content = await Client.GetStringAsync(url);
                 var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint)
                     .GetRawText();
                 jsonElement = jsonElement.TrimStart('[');
@@ -80,7 +80,7 @@ namespace NETFootballAPI
         
         #region Internal Methods
 
-        internal static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        internal static void CheckIfIntegerIsLessThanOrEqualToZero(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("Id must be greater than or equal to 0");
@@ -95,6 +95,21 @@ namespace NETFootballAPI
         {
             if (year <= 1900 || year >= (DateTime.Today.Year + 5))
                 throw new ArgumentOutOfRangeException();
+        }
+
+        internal static void CheckIfDateTimeIsValid(DateTime date)
+        {
+            if (default == date) throw new ArgumentException();
+        }
+
+        internal static string FormatDateTime(DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
+        }
+
+        internal static string AppendTimeZoneToUrl(string url, string timeZone)
+        {
+            return url + $"?timezone={timeZone}";
         }
         #endregion
     }
