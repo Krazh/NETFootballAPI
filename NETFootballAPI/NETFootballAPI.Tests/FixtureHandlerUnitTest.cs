@@ -277,7 +277,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetNextNumberOfFixturesByTeam
 
         [TestCase(-25, 5, TestName = "Test with negative number")]
@@ -294,6 +293,32 @@ namespace UnitTest_NETFootballAPI
         {
             var item = await _handler.GetNextNumberOfFixturesByTeamAsync(int.MaxValue,5);
             Assert.That(item.Count == 0);
+        }
+
+        #endregion
+        #region GetLastNumberOfFixturesByTeam
+
+        [TestCase(-25, 5, TestName = "Test with negative number")]
+        [TestCase(0, 5, TestName = "Test with 0")]
+        [TestCase(15, -25, TestName = "Test with negative number")]
+        [TestCase(15, 0, TestName = "Test with 0")]
+        public void GetLastNumberOfFixturesByTeam_IdShouldNotBeLessThanOrEqualToZero(int id, int id2)
+        {
+            Assert.That(async () => await _handler.GetLastNumberOfFixturesByTeamAsync(id, id2), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetLastNumberOfFixturesByTeam_InvalidIdShouldReturnEmptyList()
+        {
+            var item = await _handler.GetLastNumberOfFixturesByTeamAsync(int.MaxValue, 5);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetLastNumberOfFixturesByTeam_ShouldReturnPopulatedList()
+        {
+            var item = await _handler.GetLastNumberOfFixturesByTeamAsync(15, 5);
+            Assert.That(item.Count > 0);
         }
 
         #endregion
