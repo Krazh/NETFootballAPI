@@ -9,14 +9,14 @@ namespace NETFootballAPI
         private const string Endpoint = "teams";
         public async Task<Team> GetTeamByIdAsync(int teamId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
 
             return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"/team/{teamId}", Endpoint);
         }
 
         public async Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
 
             return await GetListFromEndpoint<Team>(ApiUrl + Endpoint + $"/league/{leagueId}", Endpoint);
         }

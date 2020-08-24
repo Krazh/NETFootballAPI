@@ -9,8 +9,8 @@ namespace NETFootballAPI
         private const string Endpoint = "statistics";
         public async Task<GoalStatistics> GetStatisticsByTeamIdAndLeagueIdAsync(int teamId, int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(teamId);
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
 
             return await GetItemFromEndpoint<GoalStatistics>(ApiUrl + Endpoint + $"/{leagueId}/{teamId}", Endpoint);
         }
@@ -18,8 +18,8 @@ namespace NETFootballAPI
         public async Task<GoalStatistics> GetStatisticsByTeamIdAndLeagueIdAndEndDateAsync(int teamId, int leagueId,
             DateTime date)
         {
-            CheckIfIdIsLessThanOrEqualToZero(teamId);
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             CheckIfYearIsInValidRange(date.Year);
 
             return await GetItemFromEndpoint<GoalStatistics>(

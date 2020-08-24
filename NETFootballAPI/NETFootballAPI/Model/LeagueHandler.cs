@@ -22,19 +22,19 @@ namespace NETFootballAPI
 
         public async Task<League> GetLeagueByIdAsync(int id)
         {
-            CheckIfIdIsLessThanOrEqualToZero(id);
+            CheckIfIntegerIsLessThanOrEqualToZero(id);
             return await GetItemFromEndpoint<League>(ApiUrl + Endpoint + $"/league/{id}", Endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTeamIdAsync(int teamId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
             return await GetListFromEndpoint<League>(ApiUrl + Endpoint + $"/team/{teamId}", Endpoint);
         }
 
         public async Task<List<League>> GetLeaguesByTeamIdAndSeasonAsync(int teamId, int season)
         {
-            CheckIfIdIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
             CheckIfYearIsInValidRange(season);
             return await GetListFromEndpoint<League>(ApiUrl + Endpoint + $"/team/{teamId}/{season}", Endpoint);
         }

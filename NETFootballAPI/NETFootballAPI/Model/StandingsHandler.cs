@@ -11,7 +11,7 @@ namespace NETFootballAPI
         private const string Endpoint = "leagueTable";
         public async Task<List<Standings>> GetStandingsFromLeagueAsync(int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             
 
             try

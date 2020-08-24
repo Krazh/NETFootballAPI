@@ -8,14 +8,14 @@ namespace NETFootballAPI
         private const string Endpoint = "fixtures";
         public async Task<List<string>> GetRoundsAvailableByLeagueIdAsync(int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
 
             return await GetListFromEndpoint<string>(ApiUrl + Endpoint + $"/rounds/{leagueId}", Endpoint);
         }
 
         public async Task<string> GetCurrentRoundsAvailableByLeagueIdAsync(int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
 
             return await GetItemFromEndpoint<string>(ApiUrl + Endpoint + $"/rounds/{leagueId}/current", Endpoint);
         }

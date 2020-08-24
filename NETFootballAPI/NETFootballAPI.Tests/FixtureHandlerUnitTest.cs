@@ -171,5 +171,36 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
+        #region GetNextNumberOfFixturesByLeague
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName = "Test with 0")]
+        public void GetNextNumberOfFixturesByLeague_IdShouldNotBeLessThanOrEqualToZero(int id)
+        {
+            Assert.That(async () => await _handler.GetNextNumberOfFixturesByLeagueAsync(id,5), Throws.TypeOf<ArgumentException>());
+        }
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName = "Test with 0")]
+        public void GetNextNumberOfFixturesByLeague_NumberOfMatchesShouldNotBeLessThanOrEqualToZero(int number)
+        {
+            Assert.That(async () => await _handler.GetNextNumberOfFixturesByLeagueAsync(357,number), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetNextNumberOfFixturesByLeague_InvalidIdShouldReturnEmptyList()
+        {
+            var item = await _handler.GetNextNumberOfFixturesByLeagueAsync(int.MaxValue, 5);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetNextNumberOfFixturesByLeague_InvalidNumberOfMatchesShouldReturnEmptyList()
+        {
+            var item = await _handler.GetNextNumberOfFixturesByLeagueAsync(357,int.MaxValue);
+            Assert.That(item.Count == 0);
+        }
+
+        #endregion
     }
 }

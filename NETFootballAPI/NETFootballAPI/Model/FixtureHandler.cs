@@ -9,7 +9,7 @@ namespace NETFootballAPI
         private const string Endpoint = "fixtures";
         public async Task<Fixture> GetFixtureByIdAsync(int fixtureId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(fixtureId);
+            CheckIfIntegerIsLessThanOrEqualToZero(fixtureId);
             var url = ApiUrl + Endpoint + $"/id/{fixtureId}";
 
             return await GetItemFromEndpoint<Fixture>(url, Endpoint);
@@ -38,7 +38,7 @@ namespace NETFootballAPI
             foreach (int i in leagueId)
             {
                 leagueIds += string.IsNullOrWhiteSpace(leagueIds) ? "" : "-";
-                CheckIfIdIsLessThanOrEqualToZero(i);
+                CheckIfIntegerIsLessThanOrEqualToZero(i);
                 leagueIds += i.ToString();
             }
             var url = ApiUrl + Endpoint + $"/live/{leagueIds}";
@@ -55,7 +55,7 @@ namespace NETFootballAPI
 
         public Task<List<Fixture>> GetAllFixturesByLeagueAsync(int leagueId)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             var url = ApiUrl + Endpoint + $"/league/{leagueId}";
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
@@ -69,7 +69,7 @@ namespace NETFootballAPI
         /// <returns></returns>
         public Task<List<Fixture>> GetAllFixturesByLeagueAndDateAsync(int leagueId, DateTime date)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             var url = ApiUrl + Endpoint + $"/league/{leagueId}/{FormatDateTime(date)}";
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
@@ -83,16 +83,25 @@ namespace NETFootballAPI
         /// <exception cref="ArgumentException"></exception>
         public Task<List<Fixture>> GetAllFixturesByLeagueAndRoundAsync(int leagueId, string round)
         {
-            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             CheckIfStringContainsSymbols(round);
             if (round.Contains(' ')) throw new ArgumentException();
             var url = ApiUrl + Endpoint + $"/league/{leagueId}/{round}";
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
+        /// <summary>
+        /// Unable to test a valid return at current time as demo API doesn't contain any future fixtures
+        /// </summary>
+        /// <param name="leagueId">Must be a valid integer higher than zero.</param>
+        /// <param name="numberOfFixtures">Must be a valid integer higher than zero.</param>
+        /// <returns></returns>
         public Task<List<Fixture>> GetNextNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures)
         {
-            throw new NotImplementedException();
+            CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
+            CheckIfIntegerIsLessThanOrEqualToZero(numberOfFixtures);
+            var url = ApiUrl + Endpoint + $"/league/{leagueId}/next/{numberOfFixtures}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetLastNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures)

@@ -80,7 +80,7 @@ namespace NETFootballAPI
         
         #region Internal Methods
 
-        internal static void CheckIfIdIsLessThanOrEqualToZero(int id)
+        internal static void CheckIfIntegerIsLessThanOrEqualToZero(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("Id must be greater than or equal to 0");
