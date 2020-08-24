@@ -233,5 +233,30 @@ namespace UnitTest_NETFootballAPI
         }
         
         #endregion
+
+        #region GetAllFixturesByTeam
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName = "Test with 0")]
+        public void GetAllFixturesByTeam_IdShouldNotBeLessThanOrEqualToZero(int id)
+        {
+            Assert.That(async () => await _handler.GetAllFixturesByTeamAsync(id), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByTeam_InvalidIdShouldReturnEmptyList()
+        {
+            var item = await _handler.GetAllFixturesByTeamAsync(int.MaxValue);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetAllFixturesByTeam_ShouldReturnPopulatedList()
+        {
+            var item = await _handler.GetAllFixturesByTeamAsync(15);
+            Assert.That(item.Count > 0);
+        }
+
+        #endregion
     }
 }

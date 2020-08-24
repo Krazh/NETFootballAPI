@@ -104,6 +104,12 @@ namespace NETFootballAPI
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="leagueId">Must be a valid integer higher than zero.</param>
+        /// <param name="numberOfFixtures">Must be a valid integer higher than zero.</param>
+        /// <returns></returns>
         public Task<List<Fixture>> GetLastNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures)
         {
             CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
@@ -112,9 +118,16 @@ namespace NETFootballAPI
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="teamId">Must be a valid integer higher than zero.</param>
+        /// <returns></returns>
         public Task<List<Fixture>> GetAllFixturesByTeamAsync(int teamId)
         {
-            throw new NotImplementedException();
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
+            var url = ApiUrl + Endpoint + $"/team/{teamId}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetAllFixturesByTeamAndLeagueAsync(int teamId, int leagueId)
