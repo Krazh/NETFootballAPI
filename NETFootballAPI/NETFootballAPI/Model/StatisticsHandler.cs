@@ -23,7 +23,7 @@ namespace NETFootballAPI
             CheckIfYearIsInValidRange(date.Year);
 
             return await GetItemFromEndpoint<GoalStatistics>(
-                ApiUrl + Endpoint + $"/{leagueId}/{teamId}/{date:yyyy-MM-dd}", Endpoint);
+                ApiUrl + Endpoint + $"/{leagueId}/{teamId}/{FormatDateTime(date)}", Endpoint);
         }
     }
 }

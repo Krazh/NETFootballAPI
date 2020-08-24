@@ -55,5 +55,87 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
+        #region GetAllFixturesByDate
+
+        [Test]
+        public void GetAllFixturesByDate_DateTimeMustNotBeEmpty()
+        {
+            Assert.That(async () => await _handler.GetAllFixturesByDateAsync(new DateTime()), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByDate_ShouldReturnValidList()
+        {
+            var date = DateTime.Parse("2019-04-27");
+            var item = await _handler.GetAllFixturesByDateAsync(date);
+            Assert.That(item.Count > 0);
+        }
+
+        public async Task GetAllFixturesByDate_InvalidDateShouldReturnEmptyList()
+        {
+            var item = await _handler.GetAllFixturesByDateAsync(DateTime.Parse("1444-11-11"));
+            Assert.That(item.Count == 0);
+        }
+        
+        #endregion
+        #region GetAllFixturesByLeague
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName ="Test with 0")]
+        public void GetAllFixturesByLeague_IdShouldNotBeLessThanOrEqualToZero(int id)
+        {
+            Assert.That(async () => await _handler.GetAllFixturesByLeagueAsync(id),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeague_InvalidIdShouldReturnEmptyList()
+        {
+            var item = await _handler.GetAllFixturesByLeagueAsync(int.MaxValue);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test] 
+        public async Task GetAllFixturesByLeague_ShouldReturnPopulatedList() 
+        { 
+            var item = await _handler.GetAllFixturesByLeagueAsync(357);
+            Assert.That(item.Count > 0);
+        }
+
+        #endregion
+        #region GetAllFixturesByLeagueAndDate
+
+        [TestCase(-25, TestName = "Test with negative number")]
+        [TestCase(0, TestName = "Test with 0")]
+        public void GetAllFixturesByLeagueAndDate_IdShouldNotBeLessThanOrEqualToZero(int id)
+        {
+            var validDate = DateTime.Parse("2019-04-27");
+            Assert.That(async () => await _handler.GetAllFixturesByLeagueAndDateAsync(id, validDate), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeagueAndDate_InvalidIdShouldReturnEmptyList()
+        {
+            var validDate = DateTime.Parse("2019-04-27");
+            var item = await _handler.GetAllFixturesByLeagueAndDateAsync(int.MaxValue, validDate);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeagueAndDate_InvalidDateShouldReturnEmptyList()
+        {
+            var invalidDate = DateTime.Parse("1444-11-11");
+            var item = await _handler.GetAllFixturesByLeagueAndDateAsync(357, invalidDate);
+            Assert.That(item.Count == 0);
+        }
+
+        [Test]
+        public async Task GetAllFixturesByLeagueAndDate_ShouldReturnPopulatedList()
+        {
+            var item = await _handler.GetAllFixturesByLeagueAndDateAsync(357, DateTime.Parse("2019-04-27"));
+            Assert.That(item.Count > 0);
+        }
+
+        #endregion
     }
 }

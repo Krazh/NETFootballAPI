@@ -32,7 +32,7 @@ namespace NETFootballAPI
         /// <param name="leagueId"></param>
         /// <param name="timeZone"></param>
         /// <returns></returns>
-        public async Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId, string timeZone = null)
+        public async Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId)
         {
             var leagueIds = "";
             foreach (int i in leagueId)
@@ -46,19 +46,25 @@ namespace NETFootballAPI
             return await GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date, string timeZone = null)
+        public Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date)
         {
-            throw new NotImplementedException();
+            CheckIfDateTimeIsValid(date);
+            var url = ApiUrl + Endpoint + $"/date/{FormatDateTime(date)}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
-        public Task<List<Fixture>> GetAllFixturesByLeagueAsync(int leagueId, string timeZone = null)
+        public Task<List<Fixture>> GetAllFixturesByLeagueAsync(int leagueId)
         {
-            throw new NotImplementedException();
+            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            var url = ApiUrl + Endpoint + $"/league/{leagueId}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetAllFixturesByLeagueAndDateAsync(int leagueId, DateTime date, string timeZone = null)
         {
-            throw new NotImplementedException();
+            CheckIfIdIsLessThanOrEqualToZero(leagueId);
+            var url = ApiUrl + Endpoint + $"/league/{leagueId}/{FormatDateTime(date)}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetAllFixturesByLeagueAndRoundAsync(int leagueId, string round, string timeZone = null)

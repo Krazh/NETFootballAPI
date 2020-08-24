@@ -97,6 +97,16 @@ namespace NETFootballAPI
                 throw new ArgumentOutOfRangeException();
         }
 
+        internal static void CheckIfDateTimeIsValid(DateTime date)
+        {
+            if (default == date) throw new ArgumentException();
+        }
+
+        internal static string FormatDateTime(DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
+        }
+
         internal static string AppendTimeZoneToUrl(string url, string timeZone)
         {
             return url + $"?timezone={timeZone}";

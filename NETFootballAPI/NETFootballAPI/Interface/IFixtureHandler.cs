@@ -8,9 +8,9 @@ namespace NETFootballAPI
     {
         Task<Fixture> GetFixtureByIdAsync(int fixtureId);
         Task<List<Fixture>> GetAllLiveFixturesAsync();
-        Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId, string timeZone = null);
-        Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date, string timeZone = null);
-        Task<List<Fixture>> GetAllFixturesByLeagueAsync(int leagueId, string timeZone = null);
+        Task<List<Fixture>> GetAllLiveFixturesBySeveralLeaguesAsync(List<int> leagueId);
+        Task<List<Fixture>> GetAllFixturesByDateAsync(DateTime date);
+        Task<List<Fixture>> GetAllFixturesByLeagueAsync(int leagueId);
         Task<List<Fixture>> GetAllFixturesByLeagueAndDateAsync(int leagueId, DateTime date, string timeZone = null);
         Task<List<Fixture>> GetAllFixturesByLeagueAndRoundAsync(int leagueId, string round, string timeZone = null);
         Task<List<Fixture>> GetNextNumberOfFixturesByLeagueAsync(int leagueId, int numberOfFixtures, string timeZone = null);
