@@ -144,9 +144,18 @@ namespace NETFootballAPI
             return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
+        /// <summary>
+        /// Unable to test a valid return at current time as demo API doesn't contain any future fixtures
+        /// </summary>
+        /// <param name="teamId">Must be a valid integer higher than zero.</param>
+        /// <param name="numberOfFixtures">Must be a valid integer higher than zero.</param>
+        /// <returns></returns>
         public Task<List<Fixture>> GetNextNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures)
         {
-            throw new NotImplementedException();
+            CheckIfIntegerIsLessThanOrEqualToZero(teamId);
+            CheckIfIntegerIsLessThanOrEqualToZero(numberOfFixtures);
+            var url = ApiUrl + Endpoint + $"/team/{teamId}/next/{numberOfFixtures}";
+            return GetListFromEndpoint<Fixture>(url, Endpoint);
         }
 
         public Task<List<Fixture>> GetLastNumberOfFixturesByTeamAsync(int teamId, int numberOfFixtures)

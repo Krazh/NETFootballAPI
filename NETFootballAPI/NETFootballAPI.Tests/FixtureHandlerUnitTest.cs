@@ -194,13 +194,6 @@ namespace UnitTest_NETFootballAPI
             Assert.That(item.Count == 0);
         }
 
-        [Test]
-        public async Task GetNextNumberOfFixturesByLeague_InvalidNumberOfMatchesShouldReturnEmptyList()
-        {
-            var item = await _handler.GetNextNumberOfFixturesByLeagueAsync(357,int.MaxValue);
-            Assert.That(item.Count == 0);
-        }
-
         #endregion
         #region GetLastNumberOfFixturesByLeague
 
@@ -257,7 +250,6 @@ namespace UnitTest_NETFootballAPI
         }
 
         #endregion
-
         #region GetAllFixturesByTeamAndLeague
 
         [TestCase(-25, 357, TestName = "Test with negative number")]
@@ -282,6 +274,26 @@ namespace UnitTest_NETFootballAPI
         {
             var item = await _handler.GetAllFixturesByTeamAndLeagueAsync(15,357);
             Assert.That(item.Count > 0);
+        }
+
+        #endregion
+
+        #region GetNextNumberOfFixturesByTeam
+
+        [TestCase(-25, 5, TestName = "Test with negative number")]
+        [TestCase(0, 5, TestName = "Test with 0")]
+        [TestCase(15, -25, TestName = "Test with negative number")]
+        [TestCase(15, 0, TestName = "Test with 0")]
+        public void GetNextNumberOfFixturesByTeam_IdShouldNotBeLessThanOrEqualToZero(int id, int number)
+        {
+            Assert.That(async () => await _handler.GetNextNumberOfFixturesByTeamAsync(id, number), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public async Task GetNextNumberOfFixturesByTeam_InvalidIdShouldReturnEmptyList()
+        {
+            var item = await _handler.GetNextNumberOfFixturesByTeamAsync(int.MaxValue,5);
+            Assert.That(item.Count == 0);
         }
 
         #endregion
