@@ -24,5 +24,7 @@ namespace NETFootballAPI
         public string VenueCity { get; set; }
         [JsonProperty("venue_capacity")]
         public int VenueCapacity { get; set; }
+        [JsonProperty("statistics")]
+        public Matches MatchStatistics { get; set; }
     }
 }

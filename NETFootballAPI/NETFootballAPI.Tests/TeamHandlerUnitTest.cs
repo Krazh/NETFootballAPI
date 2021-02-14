@@ -11,7 +11,8 @@ namespace UnitTest_NETFootballAPI
         [SetUp]
         public void Setup()
         {
-            var url = "https://www.api-football.com/demo/v2/";
+            var url = "";
+            var key = "5b0cecdeb8fb3c8ff17b33efa6923cbc";
             _handler.SetApiUrl(url);
         }
 

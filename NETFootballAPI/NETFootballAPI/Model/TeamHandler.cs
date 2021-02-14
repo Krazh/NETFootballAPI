@@ -21,7 +21,7 @@ namespace NETFootballAPI
             return await GetListFromEndpoint<Team>(ApiUrl + Endpoint + $"/league/{leagueId}", Endpoint);
         }
         
-        /// <param name="search">Should not contain accented or special characters. IE: ê should be replace with e</param>
+        /// <param name="search">Should not contain accented or special characters. IE: ê should be replaced with e</param>
         public async Task<Team> GetTeamByStringSearchAsync(string search)
         {
             if(string.IsNullOrWhiteSpace(search) || search.Length <3) throw new ArgumentException();
