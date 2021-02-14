@@ -11,7 +11,7 @@ namespace NETFootballAPI
         {
             CheckIfIntegerIsLessThanOrEqualToZero(teamId);
 
-            return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"/team/{teamId}", Endpoint);
+            return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
         }
 
         public async Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId)

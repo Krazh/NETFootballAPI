@@ -11,9 +11,10 @@ namespace UnitTest_NETFootballAPI
         [SetUp]
         public void Setup()
         {
-            var url = "";
+            var url = "https://v3.football.api-sports.io/";
             var key = "5b0cecdeb8fb3c8ff17b33efa6923cbc";
             _handler.SetApiUrl(url);
+            _handler.SetApiKey(key);
         }
 
         #region GetTeamById
