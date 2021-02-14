@@ -26,7 +26,7 @@ namespace NETFootballAPI
             if (string.IsNullOrWhiteSpace(key))
                 throw new ArgumentNullException(nameof(key));
             _apiKey = key;
-            Client.DefaultRequestHeaders.Add("X-RapidAPI-Key", _apiKey);
+            Client.DefaultRequestHeaders.Add("x-apisports-key", _apiKey);
         }
 
         public void SetApiUrl(string url)
