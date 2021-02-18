@@ -65,7 +65,7 @@ namespace NETFootballAPI
             try
             {
                 var content = await Client.GetStringAsync(url);
-                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint)
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetProperty(endpoint)
                     .GetRawText();
                 jsonElement = jsonElement.TrimStart('[');
                 jsonElement = jsonElement.TrimEnd(']');
@@ -74,7 +74,27 @@ namespace NETFootballAPI
             catch (Exception e)
             {
                 // TODO Implement error logging
-                return default(T)!;
+                return default!;
+            }
+        }
+
+        public async Task<string?> GetStringFromEndpoint(string url, string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(url) || string.IsNullOrWhiteSpace(endpoint)) throw new ArgumentNullException();
+            var unusedVar = new Uri(url); // Only used to test if string is a valid url
+            
+            try
+            {
+                var content = await Client.GetStringAsync(url);
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetRawText();
+                jsonElement = jsonElement.TrimStart('[');
+                jsonElement = jsonElement.TrimEnd(']');
+                return jsonElement;
+            }
+            catch (Exception e)
+            {
+                // TODO Implement error logging
+                return null;
             }
         }
         

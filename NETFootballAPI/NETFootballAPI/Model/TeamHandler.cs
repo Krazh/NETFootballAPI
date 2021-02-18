@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace NETFootballAPI
 {
@@ -11,7 +13,9 @@ namespace NETFootballAPI
         {
             CheckIfIntegerIsLessThanOrEqualToZero(teamId);
 
-            return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
+            var jsonString = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
+            
+            return GetTeamFromJson(jsonString);
         }
 
         public async Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId)
@@ -29,6 +33,15 @@ namespace NETFootballAPI
             search = search.Replace(' ', '_');
 
             return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"/search/{search}", Endpoint);
+        }
+
+        private Team GetTeamFromJson(string json)
+        {
+            var teamString = JsonDocument.Parse(json).RootElement.GetProperty("team").GetRawText();
+            var team = JsonConvert.DeserializeObject<Team>(teamString);
+            var venueString = JsonDocument.Parse(json).RootElement.GetProperty("venue").GetRawText();
+            team.Venue = JsonConvert.DeserializeObject<Venue>(venueString);
+            return team;
         }
     }
 }
