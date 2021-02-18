@@ -87,8 +87,6 @@ namespace NETFootballAPI
             {
                 var content = await Client.GetStringAsync(url);
                 var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetRawText();
-                jsonElement = jsonElement.TrimStart('[');
-                jsonElement = jsonElement.TrimEnd(']');
                 return jsonElement;
             }
             catch (Exception e)

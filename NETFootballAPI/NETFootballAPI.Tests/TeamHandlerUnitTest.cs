@@ -45,24 +45,23 @@ namespace UnitTest_NETFootballAPI
 
         [TestCase(-25, TestName = "Negative number")]
         [TestCase(0, TestName = "Zero")]
-        public void GetTeamsByLeagueId_IdShouldBeHigherThan0(int testId)
+        public void GetTeamsByLeagueIdAndSeason_IdShouldBeHigherThan0(int testId)
         {
-            Assert.That(async () => await _handler.GetTeamsByLeagueIdAsync(testId), Throws.TypeOf<ArgumentException>());
+            Assert.That(async () => await _handler.GetTeamsByLeagueIdAndSeasonAsync(testId, 2020), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        public async Task GetTeamsByLeagueId_InvalidIdShouldReturnEmptyList()
+        public void GetTeamsByLeagueIdAndSeason_InvalidIdShouldReturnEmptyList()
         {
-            var item = await _handler.GetTeamsByLeagueIdAsync(int.MaxValue);
-            Assert.That(item.Count == 0);
+            Assert.That(async () => await _handler.GetTeamsByLeagueIdAndSeasonAsync(int.MaxValue, 2020), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
-        public async Task GetTeamsByLeagueId_ShouldReturnValidLeague()
+        public async Task GetTeamsByLeagueIdAndSeason_ShouldReturnValidLeague()
         {
-            // LeagueID 357 is Serie in Brazil that is available on the demo api
-            var item = await _handler.GetTeamsByLeagueIdAsync(357);
-            Assert.That(item != null && item[0].Country == "Brazil");
+            // LeagueID 357 is Ireland
+            var item = await _handler.GetTeamsByLeagueIdAndSeasonAsync(357, 2020);
+            Assert.That(item != null && item[0].Country == "Ireland");
         }
 
         #endregion
