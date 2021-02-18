@@ -27,10 +27,9 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetTeamById_InvalidIdShouldReturnNullObject()
+        public void GetTeamById_InvalidIdShouldReturnNullObject()
         {
-            var item = await _handler.GetTeamByIdAsync(int.MaxValue);
-            Assert.That(item == null);
+            Assert.That(async () => await _handler.GetTeamByIdAsync(int.MaxValue), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
@@ -82,14 +81,13 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public async Task GetTeamByStringSearch_ShouldReturnValidLeague()
+        public async Task GetTeamByStringSearch_ShouldReturnValidTeam()
         {
             // Test API has the team Grêmio available from Brazil.
             // This is also a special case because you cannot search for accented characters like ê.
-            // That's why I'm search for Gremio and checking against Grêmio (the actual name and returned value)
-            var validTeamName = "Gremio";
-            var item = await _handler.GetTeamByStringSearchAsync(validTeamName);
-            Assert.That(item.Name == "Grêmio");
+            var teamName = "Gremio";
+            var item = await _handler.GetTeamByStringSearchAsync(teamName);
+            Assert.That(item.Name == teamName);
         }
 
         [Test]

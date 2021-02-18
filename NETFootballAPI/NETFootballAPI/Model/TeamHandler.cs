@@ -15,7 +15,9 @@ namespace NETFootballAPI
 
             var jsonString = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
             
-            return GetTeamFromJson(jsonString);
+            if(!string.IsNullOrWhiteSpace(jsonString)) return GetTeamFromJson(jsonString);
+ 
+            throw new ArgumentException();
         }
 
         public async Task<List<Team>> GetTeamsByLeagueIdAsync(int leagueId)
@@ -30,9 +32,10 @@ namespace NETFootballAPI
         {
             if(string.IsNullOrWhiteSpace(search) || search.Length <3) throw new ArgumentException();
             CheckIfStringContainsSymbols(search);
-            search = search.Replace(' ', '_');
 
-            return await GetItemFromEndpoint<Team>(ApiUrl + Endpoint + $"/search/{search}", Endpoint);
+            var json = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?name={search}", Endpoint );
+
+            return GetTeamFromJson(json);
         }
 
         private Team GetTeamFromJson(string json)
