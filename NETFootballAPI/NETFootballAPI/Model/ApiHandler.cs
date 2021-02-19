@@ -47,7 +47,7 @@ namespace NETFootballAPI
             try
             {
                 var content = await Client.GetStringAsync(url.ToLower());
-                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("api").GetProperty(endpoint).GetRawText();
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetRawText();
                 return JsonConvert.DeserializeObject<List<T>>(jsonElement);
             }
             catch (Exception e)
@@ -65,8 +65,7 @@ namespace NETFootballAPI
             try
             {
                 var content = await Client.GetStringAsync(url);
-                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetProperty(endpoint)
-                    .GetRawText();
+                var jsonElement = JsonDocument.Parse(content).RootElement.GetProperty("response").GetRawText();
                 jsonElement = jsonElement.TrimStart('[');
                 jsonElement = jsonElement.TrimEnd(']');
                 return JsonConvert.DeserializeObject<T>(jsonElement);

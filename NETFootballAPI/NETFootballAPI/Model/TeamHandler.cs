@@ -13,11 +13,12 @@ namespace NETFootballAPI
         {
             CheckIfIntegerIsLessThanOrEqualToZero(teamId);
 
-            var jsonString = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
+            var venueTeam = await GetItemFromEndpoint<VenueTeam>(ApiUrl + Endpoint + $"?id={teamId}", Endpoint);
+
+            if (venueTeam == null) return null;
             
-            if(!CheckIfEmptyString(jsonString)) return GetTeamFromJson(jsonString);
- 
-            throw new ArgumentException();
+            venueTeam.Team.Venue = venueTeam.Venue;
+            return venueTeam.Team;
         }
 
         private bool CheckIfEmptyString(string? jsonString)
@@ -36,15 +37,16 @@ namespace NETFootballAPI
             CheckIfIntegerIsLessThanOrEqualToZero(leagueId);
             CheckIfYearIsInValidRange(season);
 
-            var json = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?league={leagueId}&season={season}", Endpoint);
+            var listFromEndpoint = await GetListFromEndpoint<VenueTeam>(ApiUrl + Endpoint + $"?league={leagueId}&season={season}", Endpoint);
+            var returnList = new List<Team>();
 
-            if (!string.IsNullOrWhiteSpace(json))
+            foreach (VenueTeam v in listFromEndpoint)
             {
-                var teams = new List<Team>();
-                // Skal hente en liste ud af Teams med Venue property fra et json array hvor hvert item er delt op i to json objects, team og venue. 
+                v.Team.Venue = v.Venue;
+                returnList.Add(v.Team);
             }
 
-            throw new ArgumentException();
+            return returnList;
         }
         
         /// <param name="search">Should not contain accented or special characters. IE: ê should be replaced with e</param>
@@ -53,20 +55,12 @@ namespace NETFootballAPI
             if(string.IsNullOrWhiteSpace(search) || search.Length <3) throw new ArgumentException();
             CheckIfStringContainsSymbols(search);
 
-            var json = await GetStringFromEndpoint(ApiUrl + Endpoint + $"?name={search}", Endpoint );
+            var venueTeam = await GetItemFromEndpoint<VenueTeam>(ApiUrl + Endpoint + $"?name={search}", Endpoint );
 
-            return GetTeamFromJson(json);
-        }
+            if (venueTeam == null) return null;
 
-        private Team GetTeamFromJson(string json)
-        {
-            json = json.TrimStart('[');
-            json = json.TrimEnd(']');
-            var teamString = JsonDocument.Parse(json).RootElement.GetProperty("team").GetRawText();
-            var team = JsonConvert.DeserializeObject<Team>(teamString);
-            var venueString = JsonDocument.Parse(json).RootElement.GetProperty("venue").GetRawText();
-            team.Venue = JsonConvert.DeserializeObject<Venue>(venueString);
-            return team;
+            venueTeam.Team.Venue = venueTeam.Venue;
+            return venueTeam.Team;
         }
     }
 }

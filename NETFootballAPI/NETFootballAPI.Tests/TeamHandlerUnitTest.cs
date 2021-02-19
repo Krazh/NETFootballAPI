@@ -27,9 +27,10 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public void GetTeamById_InvalidIdShouldReturnNullObject()
+        public async Task GetTeamById_InvalidIdShouldReturnNullObject()
         {
-            Assert.That(async () => await _handler.GetTeamByIdAsync(int.MaxValue), Throws.TypeOf<ArgumentException>());
+            var item = await _handler.GetTeamByIdAsync(int.MaxValue);
+            Assert.That(item == null);
         }
 
         [Test]
@@ -51,9 +52,10 @@ namespace UnitTest_NETFootballAPI
         }
 
         [Test]
-        public void GetTeamsByLeagueIdAndSeason_InvalidIdShouldReturnEmptyList()
+        public async Task GetTeamsByLeagueIdAndSeason_InvalidIdShouldReturnEmptyList()
         {
-            Assert.That(async () => await _handler.GetTeamsByLeagueIdAndSeasonAsync(int.MaxValue, 2020), Throws.TypeOf<ArgumentException>());
+            var list = await _handler.GetTeamsByLeagueIdAndSeasonAsync(int.MaxValue, 2020);
+            Assert.That(list.Count == 0);
         }
 
         [Test]
